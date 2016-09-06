@@ -10,7 +10,14 @@ set (SRC
 	src/type-derived.cc
 	src/type-array.cc
 	src/type-tuple.cc
+	src/scope.cc
+	src/scope-nested.cc
 )
+
+add_definitions (-g3)
+
+include_directories ("${CMAKE_CURRENT_SOURCE_DIR}/include")
+include_directories ("${CMAKE_CURRENT_SOURCE_DIR}/src")
 
 add_library (arua-bootstrap-ast ${SRC})
 add_executable (arua-bootstrap-ast-test src/test.cc)

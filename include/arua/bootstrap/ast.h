@@ -22,5 +22,6 @@
 #include "arua/bootstrap/ast/type-tuple.h"
 #include "arua/bootstrap/ast/scope.h"
 #include "arua/bootstrap/ast/scope-nested.h"
+#include "arua/bootstrap/ast/exception.h"
 
 #endif
