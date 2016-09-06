@@ -20,6 +20,15 @@ using namespace std;
 DerivedType::DerivedType(string name, Ptr<Type> base)
 		: name(name)
 		, baseType(base) {
+	// sanity checks
+	if (name.empty()) {
+		throw ast::error << "derived type names must have at least one character: " << *this;
+	}
+
+	if (this == baseType.operator->()) {
+		// absolutely do not try to toString() *this here. :)
+		throw ast::error << "derived types cannot be derivations of themselves";
+	}
 }
 
 string DerivedType::getTypeString() const {
