@@ -32,11 +32,6 @@ public:
 	virtual ~Type() = default;
 
 	/**
-		Determines if the given type a derived equivalent of this type
-	*/
-	bool isEquivalent(const Ptr<Type> other) const;
-
-	/**
 		Returns the type classification for this type,
 		which indicates which type of subclass to cast to and how
 		to handle certain operations.

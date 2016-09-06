@@ -6,7 +6,6 @@ set (SRC
 	src/exception.cc
 	src/module.cc
 	src/node.cc
-	src/type.cc
 	src/type-number.cc
 	src/type-derived.cc
 	src/type-array.cc
