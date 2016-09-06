@@ -8,28 +8,31 @@ using namespace arua::bootstrap::ast;
 using namespace std;
 
 int safeMain() {
+	// root scope
+	auto scope = Ptr<Scope>::make();
+
 	auto i32 = Ptr<NumberType>::make(NumberClassification::INT, 32);
-	cout << i32 << endl;
 
-	auto i1 = Ptr<NumberType>::make(NumberClassification::UINT, 1);
-	auto _bool = Ptr<DerivedType>::make("bool", i1.as<Type>());
-	cout << _bool << endl;
+	// the below types are actually how strings will be represented in Arua.
+	auto u8 = Ptr<NumberType>::make(NumberClassification::UINT, 8);
+	auto u8_arr = Ptr<ArrayType>::make(u8.as<Type>());
+	auto str8 = Ptr<DerivedType>::make("str8", u8_arr.as<Type>());
+	// TODO(junon) implement aliases, add `str` as an alias to `str8`
 
-	auto _bool__arr = Ptr<ArrayType>::make(_bool.as<Type>());
-	cout << _bool__arr << endl;
+	auto u16 = Ptr<NumberType>::make(NumberClassification::UINT, 16);
+	auto u16_arr = Ptr<ArrayType>::make(u16.as<Type>());
+	auto str16 = Ptr<DerivedType>::make("str16", u16_arr.as<Type>());
 
-	// lol on this naming.
-	auto tup__i32__bool__arr = Ptr<TupleType>::make(i32.as<Type>(), _bool__arr.as<Type>());
-	cout << tup__i32__bool__arr << endl;
+	auto u32 = Ptr<NumberType>::make(NumberClassification::UINT, 32);
+	auto u32_arr = Ptr<ArrayType>::make(u32.as<Type>());
+	auto str32 = Ptr<DerivedType>::make("str32", u32_arr.as<Type>());
 
-	auto root_scope = Ptr<Scope>::make();
-	root_scope->addType(_bool);
-	cout << root_scope << endl;
+	scope->addType(str8);
+	scope->addType(str16);
+	scope->addType(str32);
 
-	auto nested_scope = Ptr<NestedScope>::make(root_scope);
-	auto bitset = Ptr<DerivedType>::make("bitset", _bool__arr.as<Type>()); // don't worry, not an actual bitset.
-	nested_scope->addType(bitset);
-	cout << nested_scope << endl;
+	auto fn_main = Ptr<FnType>::make(i32.as<Type>(), vector<Ptr<Type>>({str8.as<Type>()}));
+	cout << fn_main << endl;
 
 	return 0;
 }

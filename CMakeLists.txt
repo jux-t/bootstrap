@@ -9,6 +9,7 @@ set (SRC
 	src/type-derived.cc
 	src/type-array.cc
 	src/type-tuple.cc
+	src/type-fn.cc
 	src/scope.cc
 	src/scope-nested.cc
 )

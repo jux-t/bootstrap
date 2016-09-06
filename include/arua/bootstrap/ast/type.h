@@ -26,6 +26,7 @@ enum class TypeClassification {
 	DERIVED,
 	ARRAY,
 	TUPLE,
+	FUNCTION,
 };
 
 class Type : public Node {
