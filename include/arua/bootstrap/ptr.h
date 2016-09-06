@@ -18,6 +18,22 @@
 namespace arua {
 namespace bootstrap {
 
+/*
+	Where's the support for the dereference operator?
+
+	If you haven't already noticed, this class is pretty
+	forceful in terms of the kinds of operations you are allowed to
+	do, in order to promote good pointer etiquette. Forcing you to use
+	operator->() to get the raw pointer is simlar methodology as
+	using unsafe{} in Rust, as it makes you think about what you're
+	doing and give you a reason to properly implement the API that
+	will be consuming the raw pointer.
+
+	As well, it's still pretty self-documenting and easily grepped.
+
+	So please don't submit a PR with a dereference operator implementation
+	as it will be closed on the spot. :)
+*/
 template <typename T, typename Friend = T>
 class Ptr {
 	friend class Ptr<Friend>;
