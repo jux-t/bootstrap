@@ -32,6 +32,10 @@ TypeClassification ArrayType::getTypeClassification() const {
 	return TypeClassification::ARRAY;
 }
 
+void ArrayType::assertValidForScope(const Scope &scope) const {
+	this->baseType->assertValidForScope(scope);
+}
+
 Ptr<Type> ArrayType::getBaseType() const {
 	return this->baseType;
 }

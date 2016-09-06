@@ -69,6 +69,13 @@ TypeClassification NumberType::getTypeClassification() const {
 	return TypeClassification::NUMBER;
 }
 
+void NumberType::assertValidForScope(const Scope &scope) const {
+#pragma unused(scope)
+	// all number types are primitives and thus are not 'scoped', so they are always
+	// considered valid for any scope.
+	return;
+}
+
 NumberClassification NumberType::getNumberClassification() const {
 	return this->numberClassification;
 }

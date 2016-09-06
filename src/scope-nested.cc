@@ -12,6 +12,7 @@
 
 #include "arua/bootstrap/ast/exception.h"
 #include "arua/bootstrap/ast/scope-nested.h"
+#include "arua/bootstrap/ast/type-derived.h"
 
 using namespace arua::bootstrap;
 using namespace arua::bootstrap::ast;

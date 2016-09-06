@@ -35,3 +35,7 @@ ast::AstException::AstException(const ast::AstException &other)
 const char* ast::AstException::what() const throw() {
 	return this->message.c_str();
 }
+
+ostream & ast::operator<<(ostream &stream, const ast::AstException &ex) {
+	return stream << ex.what();
+}

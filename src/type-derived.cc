@@ -10,6 +10,7 @@
 	               mit license
 */
 
+#include "arua/bootstrap/ast/exception.h"
 #include "arua/bootstrap/ast/type-derived.h"
 
 using namespace arua::bootstrap;
@@ -31,6 +32,16 @@ string DerivedType::getValueString() const {
 
 TypeClassification DerivedType::getTypeClassification() const {
 	return TypeClassification::DERIVED;
+}
+
+void DerivedType::assertValidForScope(const Scope &scope) const {
+	if (!scope.canResolve(this->name)) {
+		throw ast::error << "derived type is not resolvable in this scope: " << *this;
+	}
+
+	// we don't need to recurse any further here as the call that added the type that ultimately
+	// passed the above check (this type) would have checked the base type. because of that, we
+	// can assume all derived types that are registered with us are clean.
 }
 
 Ptr<Type> DerivedType::getBaseType() const {

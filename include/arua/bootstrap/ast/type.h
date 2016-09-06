@@ -14,6 +14,7 @@
 */
 
 #include "arua/bootstrap/ast/node.h"
+#include "arua/bootstrap/ast/scope.h"
 #include "arua/bootstrap/ptr.h"
 
 namespace arua {
@@ -28,6 +29,7 @@ enum class TypeClassification {
 };
 
 class Type : public Node {
+	friend class Scope;
 public:
 	virtual ~Type() = default;
 
@@ -37,6 +39,17 @@ public:
 		to handle certain operations.
 	*/
 	virtual TypeClassification getTypeClassification() const = 0;
+
+	/**
+		Assert that this type, and all of its contained or composited
+		types, are valid for the current scope
+
+		This generally means that all of the types have been registered
+		with the scope, and thus is generally for sanity-checking not
+		only this AST library but the parser as well. It is primarily a
+		safeguard.
+	*/
+	virtual void assertValidForScope(const Scope &scope) const = 0;
 };
 
 }
@@ -44,5 +57,3 @@ public:
 }
 
 #endif
-
-

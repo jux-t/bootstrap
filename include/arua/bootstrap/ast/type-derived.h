@@ -29,6 +29,7 @@ public:
 	virtual std::string getValueString() const;
 
 	virtual TypeClassification getTypeClassification() const;
+	virtual void assertValidForScope(const Scope &scope) const;
 
 	/**
 		Returns the type this type is based on

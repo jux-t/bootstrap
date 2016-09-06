@@ -50,42 +50,16 @@ void Scope::addType(Ptr<DerivedType> type) {
 			<< "; already registered under same name as " << itr->second->toString();
 	}
 
-	// make sure all of the base types are also in the current scope hierarchy
-	this->validateAllTypes(type->getBaseType(), type.as<Type>());
+	// make sure that every type this added type is made up of is also registered within
+	// this scope. see the documentation notes on the method we call here.
+	try {
+		// we get the base type here because of coursse the type being added right now
+		// isn't part of the current scope; we're more interested in the type it's derived
+		// off of.
+		type->getBaseType()->assertValidForScope(*this);
+	} catch (AstException &ex) {
+		throw ast::error << "could not add type " << type << " to scope " << *this << ": " << ex;
+	}
 
 	this->types.insert(map<string, Ptr<DerivedType>>::value_type(type->getName(), type));
-}
-
-void Scope::validateAllTypes(Ptr<Type> type, Ptr<Type> top) const {
-	switch (type->getTypeClassification()) {
-	case TypeClassification::NUMBER:
-		// numbers are supreme primitives and thus are always 'valid' in any scope.
-		break;
-
-	case TypeClassification::DERIVED:
-		if (!this->canResolve(type.as<DerivedType>()->getName())) {
-			throw ast::error
-				<< "could not add type " << top << " to scope " << *this
-				<< "; an ancestor isn't within the current scope or any of its parents: "
-				<< type;
-		}
-
-		// we don't need to recurse any further here as the call that added the type that ultimately
-		// passed the above check would have checked the base type. because of that, we can assume
-		// all derived types that are registered with us are clean.
-		break;
-
-	case TypeClassification::ARRAY:
-		this->validateAllTypes(type.as<ArrayType>()->getBaseType().as<Type>(), top);
-		break;
-
-	case TypeClassification::TUPLE:
-		for (Ptr<Type> &childType : type.as<TupleType>()->getTypes()) {
-			this->validateAllTypes(childType, top);
-		}
-		break;
-
-	default:
-		throw ast::error << "unknown type classification for type " << type << ": " << (int) type->getTypeClassification();
-	}
 }

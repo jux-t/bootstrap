@@ -60,6 +60,8 @@ public:
 	}
 };
 
+std::ostream & operator<<(std::ostream &stream, const AstException &ex);
+
 extern AstExceptionConstructor error;
 
 }

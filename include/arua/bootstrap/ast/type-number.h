@@ -1,5 +1,5 @@
-#ifndef ARUA_BOOTSTRAP_AST_TYPE_ARRAY_H__
-#define ARUA_BOOTSTRAP_AST_TYPE_ARRAY_H__
+#ifndef ARUA_BOOTSTRAP_AST_TYPE_NUMBER_H__
+#define ARUA_BOOTSTRAP_AST_TYPE_NUMBER_H__
 #pragma once
 /*
 	      ____    _____   __   _  ____
@@ -13,17 +13,21 @@
 	               mit license
 */
 
-#include <string>
-
 #include "arua/bootstrap/ast/type.h"
 
 namespace arua {
 namespace bootstrap {
 namespace ast {
 
-class ArrayType : public Type {
+enum class NumberClassification {
+	INT,
+	UINT,
+	FLOAT,
+};
+
+class NumberType : public Type {
 public:
-	ArrayType(Ptr<Type> base);
+	NumberType(NumberClassification numberClassification, unsigned int width);
 
 	virtual std::string getTypeString() const;
 	virtual std::string getValueString() const;
@@ -32,12 +36,18 @@ public:
 	virtual void assertValidForScope(const Scope &scope) const;
 
 	/**
-		Returns the type this type is based on
+		Returns the number's general type (float, integer, etc.)
 	*/
-	Ptr<Type> getBaseType() const;
+	NumberClassification getNumberClassification() const;
+
+	/**
+		Returns the number's width, in bits.
+	*/
+	unsigned int getWidth() const;
 
 private:
-	Ptr<Type> baseType;
+	const NumberClassification numberClassification;
+	const unsigned int width;
 };
 
 }
@@ -45,5 +55,3 @@ private:
 }
 
 #endif
-
-

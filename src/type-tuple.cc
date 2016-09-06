@@ -12,6 +12,7 @@
 
 #include <sstream>
 
+#include "arua/bootstrap/ast/scope.h"
 #include "arua/bootstrap/ast/type-tuple.h"
 
 using namespace arua::bootstrap;
@@ -50,4 +51,10 @@ TypeClassification TupleType::getTypeClassification() const {
 
 vector<Ptr<Type>> TupleType::getTypes() const {
 	return this->types;
+}
+
+void TupleType::assertValidForScope(const Scope &scope) const {
+	for (const Ptr<Type> &childType : this->types) {
+		childType->assertValidForScope(scope);
+	}
 }

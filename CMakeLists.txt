@@ -14,6 +14,7 @@ set (SRC
 )
 
 add_definitions (-g3)
+add_definitions (-Wall -Wextra -Werror -pedantic)
 
 include_directories ("${CMAKE_CURRENT_SOURCE_DIR}/include")
 include_directories ("${CMAKE_CURRENT_SOURCE_DIR}/src")

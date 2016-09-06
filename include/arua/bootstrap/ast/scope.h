@@ -17,15 +17,19 @@
 #include <string>
 
 #include "arua/bootstrap/ast/node.h"
-#include "arua/bootstrap/ast/type-derived.h"
 #include "arua/bootstrap/ptr.h"
 
 namespace arua {
 namespace bootstrap {
 namespace ast {
 
+class Type;
+class DerivedType;
+
 class Scope : public Node {
 public:
+	virtual ~Scope() = default;
+
 	virtual std::string getTypeString() const;
 	virtual std::string getValueString() const;
 
@@ -61,9 +65,6 @@ public:
 
 protected:
 	std::map<std::string, Ptr<DerivedType>> types;
-
-private:
-	void validateAllTypes(Ptr<Type> type, Ptr<Type> top) const;
 };
 
 }
