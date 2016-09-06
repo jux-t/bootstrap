@@ -4,7 +4,6 @@ cmake_minimum_required (VERSION 3.2)
 set (SRC
 	src/arua-ast.cc
 	src/exception.cc
-	src/module.cc
 	src/node.cc
 	src/type-number.cc
 	src/type-derived.cc

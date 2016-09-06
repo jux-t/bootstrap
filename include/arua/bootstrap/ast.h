@@ -14,7 +14,6 @@
 */
 
 
-#include "arua/bootstrap/ast/module.h"
 #include "arua/bootstrap/ast/type.h"
 #include "arua/bootstrap/ast/type-number.h"
 #include "arua/bootstrap/ast/type-derived.h"
