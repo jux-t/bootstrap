@@ -15,5 +15,8 @@ int main() {
 	auto _bool = Ptr<DerivedType>::make("bool", i1.as<Type>());
 	cout << _bool << endl;
 
+	auto _bool__arr = Ptr<ArrayType>::make(_bool.as<Type>());
+	cout << _bool__arr << endl;
+
 	return 0;
 }

@@ -18,5 +18,6 @@
 #include "arua/bootstrap/ast/type.h"
 #include "arua/bootstrap/ast/type-number.h"
 #include "arua/bootstrap/ast/type-derived.h"
+#include "arua/bootstrap/ast/type-array.h"
 
 #endif

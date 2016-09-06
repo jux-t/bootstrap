@@ -9,6 +9,7 @@ set (SRC
 	src/type.cc
 	src/type-number.cc
 	src/type-derived.cc
+	src/type-array.cc
 )
 
 add_library (arua-bootstrap-ast ${SRC})

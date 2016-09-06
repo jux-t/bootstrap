@@ -1,5 +1,5 @@
-#ifndef ARUA_BOOTSTRAP_AST_TYPE_DERIVED_H__
-#define ARUA_BOOTSTRAP_AST_TYPE_DERIVED_H__
+#ifndef ARUA_BOOTSTRAP_AST_TYPE_ARRAY_H__
+#define ARUA_BOOTSTRAP_AST_TYPE_ARRAY_H__
 #pragma once
 /*
 	      ____    _____   __   _  ____
@@ -21,9 +21,9 @@ namespace arua {
 namespace bootstrap {
 namespace ast {
 
-class DerivedType : public Type {
+class ArrayType : public Type {
 public:
-	DerivedType(std::string name, Ptr<Type> base);
+	ArrayType(Ptr<Type> base);
 
 	virtual std::string getTypeString() const;
 	virtual std::string getValueString() const;
@@ -35,13 +35,7 @@ public:
 	*/
 	Ptr<Type> getBaseType() const;
 
-	/**
-		Returns the name of this type
-	*/
-	std::string getName() const;
-
 private:
-	std::string name;
 	Ptr<Type> baseType;
 };
 
@@ -50,4 +44,5 @@ private:
 }
 
 #endif
+
 
