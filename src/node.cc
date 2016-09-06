@@ -16,7 +16,7 @@ using namespace arua::bootstrap;
 using namespace std;
 
 string ast::Node::toString() const {
-	return "[" + this->getTypeString()  + " " + this->getValueString() + "]";
+	return "[" + this->getTypeString() + " " + this->getValueString() + "]";
 }
 
 ostream & ast::operator<<(ostream &stream, const ast::Node &node) {

@@ -20,5 +20,7 @@
 #include "arua/bootstrap/ast/type-derived.h"
 #include "arua/bootstrap/ast/type-array.h"
 #include "arua/bootstrap/ast/type-tuple.h"
+#include "arua/bootstrap/ast/scope.h"
+#include "arua/bootstrap/ast/scope-nested.h"
 
 #endif
