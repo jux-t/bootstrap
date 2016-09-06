@@ -18,5 +18,9 @@ int main() {
 	auto _bool__arr = Ptr<ArrayType>::make(_bool.as<Type>());
 	cout << _bool__arr << endl;
 
+	// lol on this nameing.
+	auto tup__i32__bool__arr = Ptr<TupleType>::make(i32.as<Type>(), _bool__arr.as<Type>());
+	cout << tup__i32__bool__arr << endl;
+
 	return 0;
 }
