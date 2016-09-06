@@ -34,17 +34,21 @@ public:
 
 	template <typename T>
 	AstException operator<<(const T& v) {
-		this->message << v;
+		std::stringstream ss;
+		ss << this->message << v;
+		this->message = ss.str();
 		return *this;
 	}
 
 	AstException operator<<(std::ostream&(*fp)(std::ostream&)) {
-		this->message << fp;
+		std::stringstream ss;
+		ss << this->message << fp;
+		this->message = ss.str();
 		return *this;
 	}
 
 private:
-	std::stringstream message;
+	std::string message;
 };
 
 class AstExceptionConstructor {

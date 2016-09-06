@@ -28,10 +28,10 @@ ast::AstException::AstException(const exception &existing)
 		: message(existing.what()) {
 }
 
-ast::AstException::AstException(const ast::AstException &other) {
-	this->message << other.message.rdbuf();
+ast::AstException::AstException(const ast::AstException &other)
+		: message(other.message) {
 }
 
 const char* ast::AstException::what() const throw() {
-	return this->message.str().c_str();
+	return this->message.c_str();
 }
