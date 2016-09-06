@@ -32,7 +32,10 @@ int safeMain() {
 	scope->addType(str32);
 
 	auto fn_main = Ptr<FnType>::make(i32.as<Type>(), vector<Ptr<Type>>({str8.as<Type>()}));
-	cout << fn_main << endl;
+
+	auto main = Ptr<DerivedType>::make("main", fn_main.as<Type>());
+	scope->addType(main);
+	cout << main << endl;
 
 	return 0;
 }
