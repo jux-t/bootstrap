@@ -16,7 +16,7 @@ arua_bootstrap_parser_visitor arua_bsp_visitor = {
 	CEVENT(comment_doc)
 	EVENT(statement_use)
 	EVENT(pub)
-	CEVENT(alias)
+	EVENT(alias)
 	EVENT(canonical_path)
 	EVENT(canonical_path_match)
 	EVENT(identifier_wildcard)

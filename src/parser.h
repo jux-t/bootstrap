@@ -14,7 +14,7 @@ typedef struct {
 	void (*comment_doc)(const char *);
 	void (*statement_use)(void);
 	void (*pub)(void);
-	void (*alias)(const char *identifier);
+	void (*alias)(void);
 	void (*canonical_path_match)(void);
 	void (*canonical_path)(void);
 	void (*identifier_wildcard)(void);

@@ -57,8 +57,12 @@ public
 	{ arua_bsp_visitor.pub(); }
 
 alias
-	= " as " <identifier>
-	{ arua_bsp_visitor.alias(yytext) }
+	= " as " identifier
+	{ arua_bsp_visitor.alias(); }
+
+canonical-path
+	= identifier ('.' identifier)*
+	{ arua_bsp_visitor.canonical_path(); }
 
 canonical-path-match
 	= identifier-match ('.' identifier-match)*
@@ -66,14 +70,14 @@ canonical-path-match
 	;
 
 identifier-match
-	= <identifier>
-	{ arua_bsp_visitor.identifier(yytext); }
+	= identifier
 	| '*'
 	{ arua_bsp_visitor.identifier_wildcard(); }
 	;
 
 identifier
-	= [a-zA-Z_] [a-zA-Z0-9_]*
+	= <[a-zA-Z_] [a-zA-Z0-9_]*>
+	{ arua_bsp_visitor.identifier(yytext); }
 	;
 
 indent
