@@ -11,9 +11,7 @@ static size_t indent = 0;
 
 arua
 	= (indent? line ([\r\n\f]+ | &EOF))+ EOF
-	{
-		arua_bsp_visitor.eof();
-	}
+	{ arua_bsp_visitor.eof(); }
 	;
 
 line
@@ -29,16 +27,12 @@ line-comment
 
 header-comment
 	= '## ' <[^\r\n\f]*>
-	{
-		arua_bsp_visitor.header_comment(yytext);
-	}
+	{ arua_bsp_visitor.comment_header(yytext); }
 	;
 
 doc-comment
 	= '#: ' <[^\r\n\f]*>
-	{
-		arua_bsp_visitor.doc_comment(yytext);
-	}
+	{ arua_bsp_visitor.comment_doc(yytext); }
 	;
 
 source-comment
@@ -54,47 +48,28 @@ statement
 	;
 
 use-statement
-	= use-begin canonical-path-match alias?
-	{
-		arua_bsp_visitor.end_use();
-	}
-	;
-
-use-begin
-	= public? "use "
-	{
-		arua_bsp_visitor.begin_use();
-	}
+	= public? "use " canonical-path-match alias?
+	{ arua_bsp_visitor.statement_use(); }
 	;
 
 public
 	= "pub "
-	{
-		arua_bsp_visitor.pub();
-	}
+	{ arua_bsp_visitor.pub(); }
 
 alias
 	= " as " <identifier>
-	{
-		arua_bsp_visitor.alias(yytext)
-	}
+	{ arua_bsp_visitor.alias(yytext) }
 
 canonical-path-match
 	= match-identifier ('.' match-identifier)*
-	{
-		arua_bsp_visitor.end_canonical_path_match();
-	}
+	{ arua_bsp_visitor.canonical_path_match(); }
 	;
 
 match-identifier
 	= <identifier>
-	{
-		arua_bsp_visitor.identifier(yytext);
-	}
+	{ arua_bsp_visitor.identifier(yytext); }
 	| '*'
-	{
-		arua_bsp_visitor.identifier_wildcard();
-	}
+	{ arua_bsp_visitor.identifier_wildcard(); }
 	;
 
 identifier
