@@ -19,6 +19,7 @@ typedef struct {
 	void (*end_canonical_path_match)(void);
 	void (*identifier_wildcard)(void);
 	void (*identifier)(const char *id);
+	void (*pub)(void);
 } arua_bootstrap_parser_visitor;
 
 #if __cplusplus

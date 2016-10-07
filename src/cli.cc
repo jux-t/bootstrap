@@ -18,7 +18,8 @@ arua_bootstrap_parser_visitor arua_bsp_visitor = {
 	[] () { cout << "    match-path:"; },
 	[] () { cout << endl; },
 	[] () { cout << " *"; },
-	[] (const char *identifier) { cout << " " << identifier; }
+	[] (const char *identifier) { cout << " " << identifier; },
+	[] () { cout << "!PUB! "; }
 };
 
 int main() {

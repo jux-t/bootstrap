@@ -19,12 +19,12 @@
 #: A document comment
 
 # use statements
-use sys.* as everything_system # this is a test inline comment
+pub use sys.* as everything_system # this is a test inline comment
 use sys.io
 use sys
 use blah
 
-#  new type declarations
+# new type declarations
 # pub type foo as bar
 # type [u8] as str8
 # type sys.io.out as cout

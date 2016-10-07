@@ -61,11 +61,17 @@ use-statement
 	;
 
 use-begin
-	= "use "
+	= public? "use "
 	{
 		arua_bsp_visitor.begin_use();
 	}
 	;
+
+public
+	= "pub "
+	{
+		arua_bsp_visitor.pub();
+	}
 
 alias
 	= " as " <identifier>
