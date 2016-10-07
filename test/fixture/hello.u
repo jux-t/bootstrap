@@ -43,3 +43,4 @@ pub type T<A, B<[U]>, C<X, Y, [[Z<F>]]>> as complex_type
 # aliases
 alias [str8] as argv
 type argv as real_argv
+pub alias T<A, B<[U]>, C<X, Y, [[Z<F>]]>> as complex_type_alias
