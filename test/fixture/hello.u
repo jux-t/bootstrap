@@ -2,6 +2,8 @@
 # It checks the basic functionality of individual syntactical components.
 
 # comments
+#    empty comment
+#
 #    comment with whitespace:
 #        #
 #    comment with many prefixes
@@ -14,9 +16,13 @@
 ## It is included in the AST so things like copyright checks can be made
 ## It will also include tag parsing in the future.
 ## It should also support 🦄   strange characters
+## Also, here is an empty header comment
+##
 
 # doc comments
 #: A document comment
+#: and an empty doc comment
+#:
 
 # use statements
 pub use sys.* as everything_system # this is a test inline comment

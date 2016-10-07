@@ -26,17 +26,17 @@ line-comment
 	;
 
 comment-header
-	= '## ' <[^\r\n\f]*>
+	= '##' (' '+ <[^\r\n\f]+>)?
 	{ arua_bsp_visitor.comment_header(yytext); }
 	;
 
 comment-doc
-	= '#: ' <[^\r\n\f]*>
+	= '#:' (' '+ <[^\r\n\f]+>)?
 	{ arua_bsp_visitor.comment_doc(yytext); }
 	;
 
 comment-source
-	=  '# ' [^\r\n\f]*
+	=  '#' &[^#:] [^\r\n\f]*
 	;
 
 comment-inline
