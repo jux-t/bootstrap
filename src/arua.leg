@@ -1,5 +1,5 @@
 %{
-//#define YY_DEBUG
+// #define YY_DEBUG
 #include <stdio.h>
 
 #include "parser.h"
@@ -50,7 +50,49 @@ inline-comment
 	;
 
 statement
-	= (!' #' [^\r\n\f#])+ # TODO
+	= use-statement
+	;
+
+use-statement
+	= use-begin canonical-path-match alias?
+	{
+		arua_bsp_visitor.end_use();
+	}
+	;
+
+use-begin
+	= "use "
+	{
+		arua_bsp_visitor.begin_use();
+	}
+	;
+
+alias
+	= " as " <identifier>
+	{
+		arua_bsp_visitor.alias(yytext)
+	}
+
+canonical-path-match
+	= match-identifier ('.' match-identifier)*
+	{
+		arua_bsp_visitor.end_canonical_path_match();
+	}
+	;
+
+match-identifier
+	= <identifier>
+	{
+		arua_bsp_visitor.identifier(yytext);
+	}
+	| '*'
+	{
+		arua_bsp_visitor.identifier_wildcard();
+	}
+	;
+
+identifier
+	= [a-zA-Z_] [a-zA-Z0-9_]*
 	;
 
 indent
