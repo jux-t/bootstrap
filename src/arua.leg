@@ -1,0 +1,13 @@
+%{
+#include <stdio.h>
+#include <unistd.h>
+%}
+
+arua
+	= "Hello!"
+	{
+		char buf[2048];
+		getlogin_r(buf, 2048);
+		printf("Hello, %s!\n", &buf[0]);
+	}
+	;
