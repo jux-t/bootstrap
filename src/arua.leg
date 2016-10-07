@@ -46,6 +46,7 @@ comment-inline
 statement
 	= statement-use
 	| statement-type
+	| statement-alias
 	;
 
 statement-use
@@ -57,6 +58,10 @@ statement-type
 	= public? "type " type alias
 	{ arua_bsp_visitor.statement_type(); }
 	;
+
+statement-alias
+	= public? "alias " type alias
+	{ arua_bsp_visitor.statement_alias(); }
 
 public
 	= "pub "

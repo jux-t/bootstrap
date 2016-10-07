@@ -33,7 +33,7 @@ type sys.io.out as cout
 pub type some.type<[[another.type]]> as masked_type
 pub type T<A, B<[U]>, C<X, Y, [[Z<F>]]>> as complex_type
 
-# 
-#  # aliases
-# alias [str8] as argv
-# type argv as real_argv
+
+# aliases
+alias [str8] as argv
+type argv as real_argv
