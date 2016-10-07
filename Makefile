@@ -9,14 +9,18 @@ clean:
 	make -C ext/peg clean
 
 bin/arua-bootstrap-grammar: bin/obj/cli.o bin/obj/arua.leg.o
-	$(CC) -o $@ $^
+	$(CXX) -o $@ $^
 
 bin/obj/%.o: src/%.c
 	mkdir -p bin/obj
 	$(CC) -std=c99 -Wall -Wextra -Werror -pedantic -c -o $@ $<
 
+bin/obj/%.o: src/%.cc
+	mkdir -p bin/obj
+	$(CXX) -std=c++11 -Wall -Wextra -Werror -c -o $@ $<
+
 bin/obj/arua.leg.o: bin/gen/arua.leg.c
-	$(CC) -std=c99 -c -o $@ $<
+	$(CC) -Isrc -std=c99 -c -o $@ $<
 
 bin/gen/arua.leg.c: src/arua.leg | ext/peg/leg
 	mkdir -p bin/gen
