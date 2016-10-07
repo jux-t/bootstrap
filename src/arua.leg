@@ -16,38 +16,38 @@ arua
 
 line
 	= line-comment
-	| statement inline-comment?
+	| statement comment-inline?
 	;
 
 line-comment
-	= header-comment
-	| doc-comment
-	| source-comment
+	= comment-header
+	| comment-doc
+	| comment-source
 	;
 
-header-comment
+comment-header
 	= '## ' <[^\r\n\f]*>
 	{ arua_bsp_visitor.comment_header(yytext); }
 	;
 
-doc-comment
+comment-doc
 	= '#: ' <[^\r\n\f]*>
 	{ arua_bsp_visitor.comment_doc(yytext); }
 	;
 
-source-comment
+comment-source
 	=  '# ' [^\r\n\f]*
 	;
 
-inline-comment
-	= ' '+ source-comment
+comment-inline
+	= ' '+ comment-source
 	;
 
 statement
-	= use-statement
+	= statement-use
 	;
 
-use-statement
+statement-use
 	= public? "use " canonical-path-match alias?
 	{ arua_bsp_visitor.statement_use(); }
 	;
@@ -61,11 +61,11 @@ alias
 	{ arua_bsp_visitor.alias(yytext) }
 
 canonical-path-match
-	= match-identifier ('.' match-identifier)*
+	= identifier-match ('.' identifier-match)*
 	{ arua_bsp_visitor.canonical_path_match(); }
 	;
 
-match-identifier
+identifier-match
 	= <identifier>
 	{ arua_bsp_visitor.identifier(yytext); }
 	| '*'
