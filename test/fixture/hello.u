@@ -25,12 +25,14 @@ use sys
 use blah
 
 # new type declarations
-# pub type foo as bar
-# type [u8] as str8
-# type sys.io.out as cout
-# 
-#  # template types
-# pub type some.type<[[another.type]]> as masked_type
+pub type foo as bar
+type [u8] as str8
+type sys.io.out as cout
+
+# template types
+pub type some.type<[[another.type]]> as masked_type
+pub type T<A, B<[U]>, C<X, Y, [[Z<F>]]>> as complex_type
+
 # 
 #  # aliases
 # alias [str8] as argv

@@ -15,12 +15,17 @@ arua_bootstrap_parser_visitor arua_bsp_visitor = {
 	CEVENT(comment_header)
 	CEVENT(comment_doc)
 	EVENT(statement_use)
+	EVENT(statement_type)
 	EVENT(pub)
 	EVENT(alias)
 	EVENT(canonical_path)
 	EVENT(canonical_path_match)
 	EVENT(identifier_wildcard)
 	CEVENT(identifier)
+	EVENT(type_array)
+	EVENT(type_basic)
+	EVENT(type_basic_template)
+	EVENT(type_basic_template_next)
 };
 
 int main() {

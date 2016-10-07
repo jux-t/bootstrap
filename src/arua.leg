@@ -45,6 +45,7 @@ comment-inline
 
 statement
 	= statement-use
+	| statement-type
 	;
 
 statement-use
@@ -52,13 +53,39 @@ statement-use
 	{ arua_bsp_visitor.statement_use(); }
 	;
 
+statement-type
+	= public? "type " type alias
+	{ arua_bsp_visitor.statement_type(); }
+	;
+
 public
 	= "pub "
 	{ arua_bsp_visitor.pub(); }
+	;
 
 alias
 	= " as " identifier
 	{ arua_bsp_visitor.alias(); }
+	;
+
+type
+	= type-basic
+	| type-array
+	;
+
+type-basic
+	= canonical-path type-basic-template?
+	{ arua_bsp_visitor.type_basic(); }
+	;
+
+type-basic-template
+	= '<' type (", " type)* '>'
+	{ arua_bsp_visitor.type_basic_template(); }
+	;
+
+type-array
+	= '[' type ']'
+	{ arua_bsp_visitor.type_array(); }
 
 canonical-path
 	= identifier ('.' identifier)*
