@@ -23,20 +23,21 @@ with a reconstruction of the type step-by-step on the right:
 
 ```
 type T<A, B<[C], D>, [[E<[F]>]]>
-│    └─┼──┼──┼┼──┼─────┼──┼┼┼┼┼┼─ T <path end>                                                T
-│      └──┼──┼┼──┼─────┼──┼┼┼┼┼┼─ A <path end> <type end>                                     T<A,>
-│         └──┼┼──┼─────┼──┼┼┼┼┼┼─ B <path end>                                                T<A, B,>
-│            └┼──┼─────┼──┼┼┼┼┼┼─ C <path end> <type end>                                     T<A, B<C>,>
-│             └──┼─────┼──┼┼┼┼┼┼─ <array modifier>                                            T<A, B<[C],>,>
-│                └─────┼──┼┼┼┼┼┼─ D <path end> <type end> <generic type end> <type end>       T<A, B<[C], D>,>
-│                      └──┼┼┼┼┼┼─ E <path end>                                                T<A, B<[C], D>, E,>
-│                         └┼┼┼┼┼─ F <path end> <type end>                                     T<A, B<[C], D>, E<F,>,>
-│                          └┼┼┼┼─ <array modifier>                                            T<A, B<[C], D>, E<[F],>,>
-│                           └┼┼┼─ <generic type end>                                          T<A, B<[C], D>, E<[F]>,>
-│                            └┼┼─ <array modifier>                                            T<A, B<[C], D>, [E<[F]>],>
-│                             └┼─ <array modifier>                                            T<A, B<[C], D>, [[E<[F]>]],>
-│                              └─ <generic type end> <type end>                               T<A, B<[C], D>, [[E<[F]>]]>
-└──────────────────────────────── type statement                                              type T<A, B<[C], D>, [[E<[F]>]]>
+│    └─┼──┼──┼┼──┼┼─────┼──┼┼┼┼┼┼─ T <path end>                        T
+│      └──┼──┼┼──┼┼─────┼──┼┼┼┼┼┼─ A <path end> <type end>             T<A,>
+│         └──┼┼──┼┼─────┼──┼┼┼┼┼┼─ B <path end>                        T<A, B,>
+│            └┼──┼┼─────┼──┼┼┼┼┼┼─ C <path end> <type end>             T<A, B<C>,>
+│             └──┼┼─────┼──┼┼┼┼┼┼─ <array modifier>                    T<A, B<[C],>,>
+│                └┼─────┼──┼┼┼┼┼┼─ D <path end> <type end>             T<A, B<[C], D,>,>
+│                 └─────┼──┼┼┼┼┼┼─ <generic type end> <type end>       T<A, B<[C], D>,>
+│                       └──┼┼┼┼┼┼─ E <path end>                        T<A, B<[C], D>, E,>
+│                          └┼┼┼┼┼─ F <path end> <type end>             T<A, B<[C], D>, E<F,>,>
+│                           └┼┼┼┼─ <array modifier>                    T<A, B<[C], D>, E<[F],>,>
+│                            └┼┼┼─ <generic type end>                  T<A, B<[C], D>, E<[F]>,>
+│                             └┼┼─ <array modifier>                    T<A, B<[C], D>, [E<[F]>],>
+│                              └┼─ <array modifier>                    T<A, B<[C], D>, [[E<[F]>]],>
+│                               └─ <generic type end> <type end>       T<A, B<[C], D>, [[E<[F]>]]>
+└───────────────────────────────── type statement                      type T<A, B<[C], D>, [[E<[F]>]]>
 ```
 
 # License
