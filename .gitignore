@@ -1,10 +1,3 @@
-### Buck ###
-buck-out/
-.buckconfig.local
-.buckd/
-.buckversion
-.fakebuckversion
-
 ### CodeBlocks ###
 # specific to CodeBlocks IDE
 *.cbp
