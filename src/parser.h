@@ -7,7 +7,9 @@ extern "C" {
 #endif
 
 typedef struct {
-	void (*hello)(void);
+	void (*eof)(void);
+	void (*indent)(void);
+	void (*dedent)(void);
 } arua_bootstrap_parser_visitor;
 
 #if __cplusplus

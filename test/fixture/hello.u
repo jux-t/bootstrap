@@ -1,0 +1,37 @@
+# This is a test Arua file.
+# It checks the basic functionality of individual syntactical components.
+
+# comments
+#    comment with whitespace:
+#        #
+#    comment with many prefixes
+# ##########
+#    comment with strange characters
+# 👽 ₃2 └
+
+# header comments
+## This is a header comment
+## It is included in the AST so things like copyright checks can be made
+## It will also include tag parsing in the future.
+## It should also support 🦄   strange characters
+
+# doc comments
+#: A document comment
+
+# use statements
+use sys.* as everything_system # this is a test inline comment
+use sys.io
+use sys
+use blah
+
+# new type declarations
+pub type foo as bar
+type [u8] as str8
+type sys.io.out as cout
+
+# template types
+pub type some.type<[[another.type]]> as masked_type
+
+# aliases
+alias [str8] as argv
+type argv as real_argv

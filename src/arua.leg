@@ -1,15 +1,40 @@
 %{
 #include <stdio.h>
-#include <unistd.h>
 
 #include "parser.h"
 
 extern arua_bootstrap_parser_visitor arua_bsp_visitor;
+
+static size_t indent = 0;
 %}
 
 arua
-	= "Hello!"
+	= (indent? [^\r\n\f]+ ([\r\n\f]+|&EOF))+ EOF
 	{
-		arua_bsp_visitor.hello();
+		arua_bsp_visitor.eof();
 	}
 	;
+
+indent
+	= ('\t'* ' '* [\r\n\f]+)* <'\t'*> ' '*
+	{
+		size_t new_indent = strlen(yytext);
+
+		if (new_indent > indent) {
+			for (size_t i = 0; i < (new_indent - indent); i++) {
+				arua_bsp_visitor.indent();
+			}
+		} else if (new_indent < indent) {
+			for (size_t i = 0; i < (indent - new_indent); i++) {
+				arua_bsp_visitor.dedent();
+			}
+		}
+
+		indent = new_indent;
+	}
+	;
+
+EOF
+	= !.
+	;
+%%
