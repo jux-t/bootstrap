@@ -1,3 +1,4 @@
 [submodule "ext/peg"]
 	path = ext/peg
 	url = https://github.com/gpakosz/peg.git
+	ignore = all
