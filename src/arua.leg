@@ -62,6 +62,7 @@ statement-type
 statement-alias
 	= public? "alias " type alias
 	{ arua_bsp_visitor.statement_alias(); }
+	;
 
 public
 	= "pub "
@@ -91,10 +92,12 @@ type-basic-template
 type-array
 	= '[' type ']'
 	{ arua_bsp_visitor.type_array(); }
+	;
 
 canonical-path
 	= identifier ('.' identifier)*
 	{ arua_bsp_visitor.canonical_path(); }
+	;
 
 canonical-path-match
 	= identifier-match ('.' identifier-match)*
