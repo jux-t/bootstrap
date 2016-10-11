@@ -13,18 +13,18 @@ test: bin/arua-bootstrap-grammar
 	bin/arua-bootstrap-grammar < test/fixture/hello.u
 
 bin/arua-bootstrap-grammar: bin/obj/cli.o bin/obj/arua.leg.o
-	$(CXX) -o $@ $^
+	$(CXX) $(CXXFLAGS) -o $@ $^
 
 bin/obj/%.o: src/%.c src/parser.h
 	mkdir -p bin/obj
-	$(CC) -std=c99 -Wall -Wextra -Werror -pedantic -c -o $@ $<
+	$(CC) $(CFLAGS) -std=c99 -Wall -Wextra -Werror -pedantic -c -o $@ $<
 
 bin/obj/%.o: src/%.cc src/parser.h
 	mkdir -p bin/obj
-	$(CXX) -std=c++11 -Wall -Wextra -Werror -c -o $@ $<
+	$(CXX) $(CXXFLAGS) -std=c++11 -Wall -Wextra -Werror -c -o $@ $<
 
 bin/obj/arua.leg.o: bin/gen/arua.leg.c
-	$(CC) -Isrc -std=c99 -c -o $@ $<
+	$(CC) $(CFLAGS) -Isrc -std=c99 -c -o $@ $<
 
 bin/gen/arua.leg.c: src/arua.leg | ext/peg/leg
 	mkdir -p bin/gen
