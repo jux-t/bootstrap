@@ -1,10 +1,21 @@
 %{
 // #define YY_DEBUG
 #include <stdio.h>
+#include <string.h>
 
 #include "parser.h"
 
 extern arua_bootstrap_parser_visitor arua_bsp_visitor;
+extern const char *arua_bsp_input;
+extern size_t arua_bsp_pos;
+
+#ifdef ARUA_BOOTSTRAP_NOSTDIN
+#define YY_INPUT(buf, result, max_size) \
+{ \
+	result = strncpy(buf, &arua_bsp_input[arua_bsp_pos], max_size) - &arua_bsp_input[arua_bsp_pos]; \
+	arua_bsp_pos += result; \
+}
+#endif
 
 static size_t indent = 0;
 %}
