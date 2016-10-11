@@ -17,6 +17,7 @@ typedef struct {
 	void (*statement_alias)(void);
 	void (*statement_fn)(void);
 	void (*statement_ret)(void);
+	void (*statement_decl_var)(void);
 	void (*pub)(void);
 	void (*alias)(void);
 	void (*canonical_path)(void);
@@ -29,6 +30,7 @@ typedef struct {
 	void (*decl_var)(void);
 	
 	/* R/L expressions */
+	void (*r_expression)(void);
 	void (*r_number)(const char *text);
 	void (*r_number_qualifier)(const char *text);
 	void (*r_number_sci)(const char *text);

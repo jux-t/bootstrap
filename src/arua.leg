@@ -49,6 +49,7 @@ statement
 	| statement-alias
 	| statement-fn
 	| statement-ret
+	| statement-decl-var
 	| expression-r-invocation
 	;
 
@@ -77,10 +78,18 @@ statement-ret
 	{ arua_bsp_visitor.statement_ret(); }
 	;
 
+statement-decl-var
+	= decl-var (' = ' expression-r)?
+	{ arua_bsp_visitor.statement_decl_var(); }
+	;
+
 expression-r
-	= expression-r-string
+	=
+	( expression-r-string
 	| expression-r-number
 	| expression-r-invocation
+	)
+	{ arua_bsp_visitor.r_expression(); }
 	;
 
 expression-r-number
