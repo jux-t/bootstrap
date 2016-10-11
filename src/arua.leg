@@ -48,6 +48,7 @@ statement
 	| statement-type
 	| statement-alias
 	| statement-fn
+	| statement-ret
 	;
 
 statement-use
@@ -68,6 +69,50 @@ statement-alias
 statement-fn
 	= public? "fn " identifier '(' decl-var-list? ')' (' ' type)?
 	{ arua_bsp_visitor.statement_fn(); }
+	;
+
+statement-ret
+	= "ret" (' ' expression-r)?
+	{ arua_bsp_visitor.statement_ret(); }
+	;
+
+expression-r
+	= expression-r-number
+	;
+
+expression-r-number
+	= number-radix
+	| number
+	;
+
+number
+	= number-simple number-sci? number-qualifier?
+	;
+
+number-simple
+	= <('+'|'-')? digits? ('.' digits?)?>
+	{ arua_bsp_visitor.r_number(yytext); }
+	;
+
+number-qualifier
+	= <[fui] digits>
+	{ arua_bsp_visitor.r_number_qualifier(yytext); }
+	;
+
+number-sci
+	= 'e' <('+'|'-')? digits>
+	{ arua_bsp_visitor.r_number_sci(yytext); }
+	;
+
+number-radix
+	= number-radix-prefix <digits-radix>
+	{ arua_bsp_visitor.r_number_radix(yytext); }
+	number-qualifier?
+	;
+
+number-radix-prefix
+	= <[0-9][0-9]?> 'x'
+	{ arua_bsp_visitor.r_number_radix_prefix(yytext) }
 	;
 
 decl-var-list
@@ -129,6 +174,13 @@ identifier
 	{ arua_bsp_visitor.identifier(yytext); }
 	;
 
+digits-radix
+	= [A-Z0-9]+
+	;
+
+digits
+	= [0-9]+
+	;
 indent
 	= [\r\n\f]* <'\t'*> ' '*
 	{
