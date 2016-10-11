@@ -8,12 +8,23 @@
 extern arua_bootstrap_parser_visitor arua_bsp_visitor;
 extern const char *arua_bsp_input;
 extern size_t arua_bsp_pos;
+extern size_t arua_bsp_len;
 
 #ifdef ARUA_BOOTSTRAP_NOSTDIN
+#define u_min(a, b) \
+	({ __typeof__ (a) _a = (a); \
+	__typeof__ (b) _b = (b); \
+	_a < _b ? _a : _b; })
+
 #define YY_INPUT(buf, result, max_size) \
 { \
-	result = strncpy(buf, &arua_bsp_input[arua_bsp_pos], max_size) - &arua_bsp_input[arua_bsp_pos]; \
-	arua_bsp_pos += result; \
+	if (arua_bsp_pos >= arua_bsp_len) { \
+		result = 0; \
+	} else { \
+		result = u_min(arua_bsp_len - arua_bsp_pos, max_size); \
+		memcpy(buf, &arua_bsp_input[arua_bsp_pos], result); \
+		arua_bsp_pos += result; \
+	} \
 }
 #endif
 
