@@ -78,7 +78,8 @@ statement-ret
 	;
 
 expression-r
-	= expression-r-number
+	= expression-r-string
+	| expression-r-number
 	| expression-r-invocation
 	;
 
@@ -90,6 +91,19 @@ expression-r-number
 expression-r-invocation
 	= canonical-path '(' invocation-arguments? ')'
 	{ arua_bsp_visitor.r_invocation(); }
+	;
+
+expression-r-string
+	= '"' <string-character*> '"'
+	{ arua_bsp_visitor.r_string(yytext); }
+	;
+
+string-character
+	= string-escape | [^"\\\r\n\f]
+	;
+
+string-escape
+	= '\\' .
 	;
 
 invocation-arguments
