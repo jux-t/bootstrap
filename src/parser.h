@@ -15,6 +15,7 @@ typedef struct {
 	void (*statement_use)(void);
 	void (*statement_type)(void);
 	void (*statement_alias)(void);
+	void (*statement_fn)(void);
 	void (*pub)(void);
 	void (*alias)(void);
 	void (*canonical_path)(void);
@@ -24,6 +25,7 @@ typedef struct {
 	void (*type_array)(void);
 	void (*type_basic)(void);
 	void (*type_basic_template)(void);
+	void (*decl_var)(void);
 } arua_bootstrap_parser_visitor;
 
 #if __cplusplus

@@ -17,6 +17,7 @@ arua_bootstrap_parser_visitor arua_bsp_visitor = {
 	EVENT(statement_use)
 	EVENT(statement_type)
 	EVENT(statement_alias)
+	EVENT(statement_fn)
 	EVENT(pub)
 	EVENT(alias)
 	EVENT(canonical_path)
@@ -26,6 +27,7 @@ arua_bootstrap_parser_visitor arua_bsp_visitor = {
 	EVENT(type_array)
 	EVENT(type_basic)
 	EVENT(type_basic_template)
+	EVENT(decl_var)
 };
 
 int main() {

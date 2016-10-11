@@ -44,3 +44,9 @@ pub type T<A, B<[U]>, C<X, Y, [[Z<F>]]>> as complex_type
 alias [str8] as argv
 type argv as real_argv
 pub alias T<A, B<[U]>, C<X, Y, [[Z<F>]]>> as complex_type_alias
+
+# Functions
+fn main(argv [str]) i32
+	# this is a test!
+	# sys.io.write("Hello, world!")
+	# ret 0

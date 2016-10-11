@@ -47,6 +47,7 @@ statement
 	= statement-use
 	| statement-type
 	| statement-alias
+	| statement-fn
 	;
 
 statement-use
@@ -62,6 +63,19 @@ statement-type
 statement-alias
 	= public? "alias " type alias
 	{ arua_bsp_visitor.statement_alias(); }
+	;
+
+statement-fn
+	= public? "fn " identifier '(' decl-var-list? ')' (' ' type)?
+	{ arua_bsp_visitor.statement_fn(); }
+	;
+
+decl-var-list
+	= decl-var (", " decl-var)*
+	;
+
+decl-var
+	= identifier ' ' type
 	;
 
 public
