@@ -49,6 +49,6 @@ pub alias T<A, B<[U]>, C<X, Y, [[Z<F>]]>> as complex_type_alias
 fn main(argv [str]) i32
 	# this is a test!
 	sys.io.write()
-	foo i32 = get_time(0)
+	foo i32 = get_time(0, 1)
 	sys.io.write("hello, world!\n")
 	ret 0
