@@ -48,5 +48,6 @@ pub alias T<A, B<[U]>, C<X, Y, [[Z<F>]]>> as complex_type_alias
 # Functions
 fn main(argv [str]) i32
 	# this is a test!
-	sys.io.write("hello, world!")
-	ret 16xDEADBEEFi32
+	sys.io.write()
+	sys.io.write("hello, world!\n")
+	ret 0
