@@ -24,6 +24,7 @@ bin/obj/%.o: src/%.cc src/parser.h
 	$(CXX) $(CXXFLAGS) -std=c++11 -Wall -Wextra -Werror -c -o $@ $<
 
 bin/obj/arua.leg.o: bin/gen/arua.leg.c
+	mkdir -p bin/obj
 	$(CC) $(CFLAGS) -Isrc -std=c99 -c -o $@ $<
 
 bin/gen/arua.leg.c: src/arua.leg | ext/peg/leg
