@@ -34,6 +34,7 @@ arua_bootstrap_parser_visitor arua_bsp_visitor = {
 	CEVENT(r_number_sci)
 	CEVENT(r_number_radix)
 	CEVENT(r_number_radix_prefix)
+	EVENT(r_invocation)
 };
 
 int main() {

@@ -34,6 +34,7 @@ typedef struct {
 	void (*r_number_sci)(const char *text);
 	void (*r_number_radix)(const char *text);
 	void (*r_number_radix_prefix)(const char *text);
+	void (*r_invocation)(void);
 } arua_bootstrap_parser_visitor;
 
 #if __cplusplus

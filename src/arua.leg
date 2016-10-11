@@ -49,6 +49,7 @@ statement
 	| statement-alias
 	| statement-fn
 	| statement-ret
+	| expression-r-invocation
 	;
 
 statement-use
@@ -78,11 +79,21 @@ statement-ret
 
 expression-r
 	= expression-r-number
+	| expression-r-invocation
 	;
 
 expression-r-number
 	= number-radix
 	| number
+	;
+
+expression-r-invocation
+	= canonical-path '(' invocation-arguments? ')'
+	{ arua_bsp_visitor.r_invocation(); }
+	;
+
+invocation-arguments
+	= expression-r (", " expression-r)*
 	;
 
 number
