@@ -1,14 +1,14 @@
-# Arua Bootstrap Grammar/Parser
+# Arua Bootstrap Compiler
 
-This repository houses the first iteration of the Arua Grammar.
+This repository houses the first iteration of the Arua compiler.
 
 It serves as a loose adaptation of what will be the Arua standard syntax, and may even
 be a subset of it.
 
-The goal of this repository is to convey the intended syntax of Arua and to create a
-foundation on which the tooling can read Arua code.
+The goal of this repository is to create a barebones Arua compiler on which the official
+Arua compiler, written in Arua, can be written.
 
-## Approach
+## Parser Approach
 
 This parser uses a dialect of PEG called LEG, which is a slightly modified version of
 Ford's original PEG syntax to accomodate for readability as well as the introduction of
