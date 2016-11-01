@@ -27,6 +27,17 @@ using namespace arua;
 using namespace arua::ast;
 using namespace std;
 
+#ifndef ARUA_NO_ASSERT
+#	ifdef ASSERT
+#		undef ASSERT
+#	endif
+#	define ASSERT(expr, message) if (!(expr)) {\
+		throw error << message;\
+	}
+#else
+#	define ASSERT(...)
+#endif
+
 enum AruaParserElement : unsigned int {
 	APE_HEADER_DOC,
 	APE_DOC,
@@ -185,10 +196,7 @@ void AstVisitor::_burn_header_comments() {
 	deque<string> elements;
 
 	while (this->stack.size()) {
-		if (this->stack.top() != APE_HEADER_DOC) {
-			// TODO throw into an assert() function
-			throw error << "encountered element other than a header doc: " << this->stack.top();
-		}
+		ASSERT(this->stack.top() == APE_HEADER_DOC, "encountered element other than a header doc: " << this->stack.top());
 
 		elements.push_front(this->resources.top());
 		this->stack.pop();
