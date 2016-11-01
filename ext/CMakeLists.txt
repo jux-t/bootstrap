@@ -1,3 +1,5 @@
+add_subdirectory (xopt)
+
 set (LEG_SRC
 	peg/src/tree.c
 	peg/src/compile.c

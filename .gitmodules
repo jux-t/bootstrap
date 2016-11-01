@@ -2,3 +2,6 @@
 	path = ext/peg
 	url = https://github.com/gpakosz/peg.git
 	ignore = all
+[submodule "ext/xopt"]
+	path = ext/xopt
+	url = https://github.com/Qix-/xopt.git
