@@ -15,10 +15,9 @@
 
 #include <vector>
 
-#include "arua/bootstrap/ast/type.h"
+#include "ast/type.h"
 
 namespace arua {
-namespace bootstrap {
 namespace ast {
 
 class FnType : public Type {
@@ -60,7 +59,6 @@ private:
 	std::vector<Ptr<Type>> argTypes;
 };
 
-}
 }
 }
 

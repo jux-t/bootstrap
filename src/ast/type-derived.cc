@@ -10,11 +10,11 @@
 	               mit license
 */
 
-#include "arua/bootstrap/ast/exception.h"
-#include "arua/bootstrap/ast/type-derived.h"
+#include "ast/exception.h"
+#include "ast/type-derived.h"
 
-using namespace arua::bootstrap;
-using namespace arua::bootstrap::ast;
+using namespace arua;
+using namespace arua::ast;
 using namespace std;
 
 DerivedType::DerivedType(string name, Ptr<Type> base)

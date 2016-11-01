@@ -13,10 +13,9 @@
 	               mit license
 */
 
-#include "arua/bootstrap/ast/type.h"
+#include "ast/type.h"
 
 namespace arua {
-namespace bootstrap {
 namespace ast {
 
 enum class NumberClassification {
@@ -50,7 +49,6 @@ private:
 	const unsigned int width;
 };
 
-}
 }
 }
 

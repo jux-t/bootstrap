@@ -10,10 +10,10 @@
 	               mit license
 */
 
-#include "arua/bootstrap/ast/exception.h"
-#include "arua/bootstrap/ast/type-number.h"
+#include "ast/exception.h"
+#include "ast/type-number.h"
 
-using namespace arua::bootstrap::ast;
+using namespace arua::ast;
 using namespace std;
 
 static const unsigned int MAX_WIDTH = 4096; //> RFC #14

@@ -13,11 +13,10 @@
 	               mit license
 */
 
-#include "arua/bootstrap/ast/scope.h"
-#include "arua/bootstrap/ptr.h"
+#include "ast/scope.h"
+#include "ptr.h"
 
 namespace arua {
-namespace bootstrap {
 namespace ast {
 
 class NestedScope : public Scope {
@@ -34,7 +33,6 @@ private:
 	const Ptr<Scope> parent;
 };
 
-}
 }
 }
 

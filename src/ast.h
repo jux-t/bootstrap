@@ -14,14 +14,14 @@
 */
 
 
-#include "arua/bootstrap/ast/type.h"
-#include "arua/bootstrap/ast/type-number.h"
-#include "arua/bootstrap/ast/type-derived.h"
-#include "arua/bootstrap/ast/type-array.h"
-#include "arua/bootstrap/ast/type-tuple.h"
-#include "arua/bootstrap/ast/type-fn.h"
-#include "arua/bootstrap/ast/scope.h"
-#include "arua/bootstrap/ast/scope-nested.h"
-#include "arua/bootstrap/ast/exception.h"
+#include "ast/type.h"
+#include "ast/type-number.h"
+#include "ast/type-derived.h"
+#include "ast/type-array.h"
+#include "ast/type-tuple.h"
+#include "ast/type-fn.h"
+#include "ast/scope.h"
+#include "ast/scope-nested.h"
+#include "ast/exception.h"
 
 #endif

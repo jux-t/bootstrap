@@ -1,5 +1,5 @@
-#ifndef ARUA_BOOTSTRAP_AST_TYPE_ARRAY_H__
-#define ARUA_BOOTSTRAP_AST_TYPE_ARRAY_H__
+#ifndef ARUA_BOOTSTRAP_AST_TYPE_TUPLE_H__
+#define ARUA_BOOTSTRAP_AST_TYPE_TUPLE_H__
 #pragma once
 /*
 	      ____    _____   __   _  ____
@@ -13,17 +13,24 @@
 	               mit license
 */
 
+#include <initializer_list>
 #include <string>
+#include <vector>
 
-#include "arua/bootstrap/ast/type.h"
+#include "ast/type.h"
 
 namespace arua {
-namespace bootstrap {
 namespace ast {
 
-class ArrayType : public Type {
+class TupleType : public Type {
 public:
-	ArrayType(Ptr<Type> base);
+	template <typename... T>
+	TupleType(T... types)
+			: types({types...}) {
+	}
+
+	TupleType(std::initializer_list<Ptr<Type>> types);
+	TupleType(std::vector<Ptr<Type>> types);
 
 	virtual std::string getTypeString() const;
 	virtual std::string getValueString() const;
@@ -32,18 +39,15 @@ public:
 	virtual void assertValidForScope(const Scope &scope) const;
 
 	/**
-		Returns the type this type is based on
+		Returns the tuple's types
 	*/
-	Ptr<Type> getBaseType() const;
+	std::vector<Ptr<Type>> getTypes() const;
 
 private:
-	Ptr<Type> baseType;
+	std::vector<Ptr<Type>> types;
 };
 
 }
 }
-}
 
 #endif
-
-

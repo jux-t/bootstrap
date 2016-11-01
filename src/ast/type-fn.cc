@@ -13,12 +13,12 @@
 #include <sstream>
 #include <string>
 
-#include "arua/bootstrap/ast/exception.h"
-#include "arua/bootstrap/ast/type-fn.h"
-#include "arua/bootstrap/ast/type-number.h"
+#include "ast/exception.h"
+#include "ast/type-fn.h"
+#include "ast/type-number.h"
 
-using namespace arua::bootstrap;
-using namespace arua::bootstrap::ast;
+using namespace arua;
+using namespace arua::ast;
 using namespace std;
 
 static const Ptr<Type> RET_VOID = Ptr<NumberType>::make(NumberClassification::INT, 1).as<Type>();

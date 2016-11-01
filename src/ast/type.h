@@ -13,12 +13,11 @@
 	               mit license
 */
 
-#include "arua/bootstrap/ast/node.h"
-#include "arua/bootstrap/ast/scope.h"
-#include "arua/bootstrap/ptr.h"
+#include "ast/node.h"
+#include "ast/scope.h"
+#include "ptr.h"
 
 namespace arua {
-namespace bootstrap {
 namespace ast {
 
 enum class TypeClassification {
@@ -53,7 +52,6 @@ public:
 	virtual void assertValidForScope(const Scope &scope) const = 0;
 };
 
-}
 }
 }
 

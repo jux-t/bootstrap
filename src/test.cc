@@ -12,11 +12,11 @@
 
 #include <iostream>
 
-#include "arua/bootstrap/ast.h"
-#include "arua/bootstrap/ptr.h"
+#include "ast.h"
+#include "ptr.h"
 
-using namespace arua::bootstrap;
-using namespace arua::bootstrap::ast;
+using namespace arua;
+using namespace arua::ast;
 using namespace std;
 
 int safeMain() {

@@ -10,15 +10,15 @@
 	               mit license
 */
 
-#include "arua/bootstrap/ast/exception.h"
-#include "arua/bootstrap/ast/scope.h"
-#include "arua/bootstrap/ast/type-array.h"
-#include "arua/bootstrap/ast/type-derived.h"
-#include "arua/bootstrap/ast/type-number.h"
-#include "arua/bootstrap/ast/type-tuple.h"
+#include "ast/exception.h"
+#include "ast/scope.h"
+#include "ast/type-array.h"
+#include "ast/type-derived.h"
+#include "ast/type-number.h"
+#include "ast/type-tuple.h"
 
-using namespace arua::bootstrap;
-using namespace arua::bootstrap::ast;
+using namespace arua;
+using namespace arua::ast;
 using namespace std;
 
 string Scope::getTypeString() const {

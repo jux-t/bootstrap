@@ -16,11 +16,10 @@
 #include <map>
 #include <string>
 
-#include "arua/bootstrap/ast/node.h"
-#include "arua/bootstrap/ptr.h"
+#include "ast/node.h"
+#include "ptr.h"
 
 namespace arua {
-namespace bootstrap {
 namespace ast {
 
 class Type;
@@ -67,7 +66,6 @@ protected:
 	std::map<std::string, Ptr<DerivedType>> types;
 };
 
-}
 }
 }
 

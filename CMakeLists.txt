@@ -27,7 +27,6 @@ add_definitions (-g3)
 set (ARUA_FLAGS -Wall -Wextra -Werror -pedantic)
 add_definitions (-std=c++11)
 
-include_directories ("${CMAKE_CURRENT_SOURCE_DIR}/include")
 include_directories ("${CMAKE_CURRENT_SOURCE_DIR}/src")
 
 add_library (arua-bootstrap-ast ${SRC})

@@ -10,12 +10,12 @@
 	               mit license
 */
 
-#include "arua/bootstrap/ast/exception.h"
+#include "ast/exception.h"
 
-using namespace arua::bootstrap;
+using namespace arua;
 using namespace std;
 
-ast::AstExceptionConstructor arua::bootstrap::ast::error;
+ast::AstExceptionConstructor arua::ast::error;
 
 ast::AstException::AstException() {
 }

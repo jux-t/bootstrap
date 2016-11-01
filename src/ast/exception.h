@@ -19,7 +19,6 @@
 #include <string>
 
 namespace arua {
-namespace bootstrap {
 namespace ast {
 
 class AstException : public virtual std::exception {
@@ -64,7 +63,6 @@ std::ostream & operator<<(std::ostream &stream, const AstException &ex);
 
 extern AstExceptionConstructor error;
 
-}
 }
 }
 

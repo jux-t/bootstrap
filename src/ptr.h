@@ -16,7 +16,6 @@
 #include <ostream>
 
 namespace arua {
-namespace bootstrap {
 
 /*
 	Where's the support for the dereference operator?
@@ -96,7 +95,6 @@ std::ostream & operator<<(std::ostream &stream, const Ptr<T> &ptr) {
 	return stream;
 }
 
-}
 }
 
 #endif

@@ -12,11 +12,11 @@
 
 #include <sstream>
 
-#include "arua/bootstrap/ast/scope.h"
-#include "arua/bootstrap/ast/type-tuple.h"
+#include "ast/scope.h"
+#include "ast/type-tuple.h"
 
-using namespace arua::bootstrap;
-using namespace arua::bootstrap::ast;
+using namespace arua;
+using namespace arua::ast;
 using namespace std;
 
 TupleType::TupleType(initializer_list<Ptr<Type>> types)

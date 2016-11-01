@@ -10,9 +10,9 @@
 	               mit license
 */
 
-#include "arua/bootstrap/ast/node.h"
+#include "ast/node.h"
 
-using namespace arua::bootstrap;
+using namespace arua;
 using namespace std;
 
 string ast::Node::toString() const {

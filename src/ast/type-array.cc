@@ -10,10 +10,10 @@
 	               mit license
 */
 
-#include "arua/bootstrap/ast/type-array.h"
+#include "ast/type-array.h"
 
-using namespace arua::bootstrap;
-using namespace arua::bootstrap::ast;
+using namespace arua;
+using namespace arua::ast;
 using namespace std;
 
 ArrayType::ArrayType(Ptr<Type> base)
