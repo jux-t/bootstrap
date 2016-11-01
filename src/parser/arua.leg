@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "parser.h"
+#include "parser/parser.h"
 
 extern arua_bootstrap_parser_visitor arua_bsp_visitor;
 extern const char *arua_bsp_input;
