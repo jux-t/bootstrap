@@ -29,6 +29,7 @@ add_definitions (-std=c++11)
 
 include_directories ("${CMAKE_CURRENT_SOURCE_DIR}/src")
 include_directories ("${CMAKE_CURRENT_SOURCE_DIR}/ext/xopt")
+include_directories ("${CMAKE_CURRENT_SOURCE_DIR}/ext/filesystem")
 
 add_library (arua-bootstrap-ast ${SRC})
 add_executable (arua-bootstrap src/cli.cc)

@@ -13,8 +13,9 @@
 	               mit license
 */
 
-#include <string>
 #include <vector>
+
+#include "filesystem/path.h"
 
 #include "ptr.h"
 
@@ -23,7 +24,7 @@ namespace arua {
 struct AruaCliConfig {
 	bool help;
 
-	std::vector<std::string> extras;
+	std::vector<filesystem::path> extras;
 
 	static Ptr<AruaCliConfig> parse(int argc, const char **argv);
 };

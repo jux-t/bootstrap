@@ -25,5 +25,9 @@ int main(int argc, const char **argv) {
 		return 2;
 	}
 
+	for (filesystem::path filename : config->extras) {
+		cout << "arua-bootstrap: " << filename << endl;
+	}
+
 	return 0;
 }
