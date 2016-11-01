@@ -1,0 +1,262 @@
+%{
+// #define YY_DEBUG
+#include <stdio.h>
+#include <string.h>
+
+#include "parser.h"
+
+extern arua_bootstrap_parser_visitor arua_bsp_visitor;
+extern const char *arua_bsp_input;
+extern size_t arua_bsp_pos;
+extern size_t arua_bsp_len;
+
+#ifdef ARUA_BOOTSTRAP_NOSTDIN
+#define u_min(a, b) \
+	({ __typeof__ (a) _a = (a); \
+	__typeof__ (b) _b = (b); \
+	_a < _b ? _a : _b; })
+
+#define YY_INPUT(buf, result, max_size) \
+{ \
+	if (arua_bsp_pos >= arua_bsp_len) { \
+		result = 0; \
+	} else { \
+		result = u_min(arua_bsp_len - arua_bsp_pos, max_size); \
+		memcpy(buf, &arua_bsp_input[arua_bsp_pos], result); \
+		arua_bsp_pos += result; \
+	} \
+}
+#endif
+
+static size_t indent = 0;
+%}
+
+arua
+	= (indent? line ([\r\n\f]+ | &EOF))+ EOF indent
+	{ arua_bsp_visitor.eof(); }
+	;
+
+line
+	= line-comment
+	| statement comment-inline?
+	;
+
+line-comment
+	= comment-header
+	| comment-doc
+	| comment-source
+	;
+
+comment-header
+	= '##' (' '+ <[^\r\n\f]+>)?
+	{ arua_bsp_visitor.comment_header(yytext); }
+	;
+
+comment-doc
+	= '#:' (' '+ <[^\r\n\f]+>)?
+	{ arua_bsp_visitor.comment_doc(yytext); }
+	;
+
+comment-source
+	=  '#' &[^#:] [^\r\n\f]*
+	;
+
+comment-inline
+	= ' '+ comment-source
+	;
+
+statement
+	= statement-use
+	| statement-type
+	| statement-alias
+	| statement-fn
+	| statement-ret
+	| statement-decl-var
+	| expression-r-invocation
+	;
+
+statement-use
+	= public? "use " canonical-path-match alias?
+	{ arua_bsp_visitor.statement_use(); }
+	;
+
+statement-type
+	= public? "type " type alias
+	{ arua_bsp_visitor.statement_type(); }
+	;
+
+statement-alias
+	= public? "alias " type alias
+	{ arua_bsp_visitor.statement_alias(); }
+	;
+
+statement-fn
+	= public? "fn " identifier '(' decl-var-list? ')' (' ' type)?
+	{ arua_bsp_visitor.statement_fn(); }
+	;
+
+statement-ret
+	= "ret" (' ' expression-r)?
+	{ arua_bsp_visitor.statement_ret(); }
+	;
+
+statement-decl-var
+	= decl-var (' = ' expression-r)?
+	{ arua_bsp_visitor.statement_decl_var(); }
+	;
+
+expression-r
+	=
+	( expression-r-string
+	| expression-r-number
+	| expression-r-invocation
+	)
+	{ arua_bsp_visitor.r_expression(); }
+	;
+
+expression-r-number
+	= number-radix
+	| number
+	;
+
+expression-r-invocation
+	= canonical-path '(' invocation-arguments? ')'
+	{ arua_bsp_visitor.r_invocation(); }
+	;
+
+expression-r-string
+	= '"' <string-character*> '"'
+	{ arua_bsp_visitor.r_string(yytext); }
+	;
+
+string-character
+	= string-escape | [^"\\\r\n\f]
+	;
+
+string-escape
+	= '\\' .
+	;
+
+invocation-arguments
+	= expression-r (", " expression-r)*
+	;
+
+number
+	= number-simple number-sci? number-qualifier?
+	;
+
+number-simple
+	= <('+'|'-')? &([0-9] | '.' [0-9]) digits? ('.' digits?)?>
+	{ arua_bsp_visitor.r_number(yytext); }
+	;
+
+number-qualifier
+	= <[fui] digits>
+	{ arua_bsp_visitor.r_number_qualifier(yytext); }
+	;
+
+number-sci
+	= 'e' <('+'|'-')? digits>
+	{ arua_bsp_visitor.r_number_sci(yytext); }
+	;
+
+number-radix
+	= number-radix-prefix <digits-radix>
+	{ arua_bsp_visitor.r_number_radix(yytext); }
+	number-qualifier?
+	;
+
+number-radix-prefix
+	= <[0-9][0-9]?> 'x'
+	{ arua_bsp_visitor.r_number_radix_prefix(yytext) }
+	;
+
+decl-var-list
+	= decl-var (", " decl-var)*
+	;
+
+decl-var
+	= identifier ' ' type
+	;
+
+public
+	= "pub "
+	{ arua_bsp_visitor.pub(); }
+	;
+
+alias
+	= " as " identifier
+	{ arua_bsp_visitor.alias(); }
+	;
+
+type
+	= type-basic
+	| type-array
+	;
+
+type-basic
+	= canonical-path type-basic-template?
+	{ arua_bsp_visitor.type_basic(); }
+	;
+
+type-basic-template
+	= '<' type (", " type)* '>'
+	{ arua_bsp_visitor.type_basic_template(); }
+	;
+
+type-array
+	= '[' type ']'
+	{ arua_bsp_visitor.type_array(); }
+	;
+
+canonical-path
+	= identifier ('.' identifier)*
+	{ arua_bsp_visitor.canonical_path(); }
+	;
+
+canonical-path-match
+	= identifier-match ('.' identifier-match)*
+	{ arua_bsp_visitor.canonical_path_match(); }
+	;
+
+identifier-match
+	= identifier
+	| '*'
+	{ arua_bsp_visitor.identifier_wildcard(); }
+	;
+
+identifier
+	= <[a-zA-Z_] [a-zA-Z0-9_]*>
+	{ arua_bsp_visitor.identifier(yytext); }
+	;
+
+digits-radix
+	= [A-Z0-9]+
+	;
+
+digits
+	= [0-9]+
+	;
+indent
+	= [\r\n\f]* <'\t'*> ' '*
+	{
+		size_t new_indent = strlen(yytext);
+
+		if (new_indent > indent) {
+			for (size_t i = 0; i < (new_indent - indent); i++) {
+				arua_bsp_visitor.indent();
+			}
+		} else if (new_indent < indent) {
+			for (size_t i = 0; i < (indent - new_indent); i++) {
+				arua_bsp_visitor.dedent();
+			}
+		}
+
+		indent = new_indent;
+	}
+	;
+
+EOF
+	= !.
+	;
+%%

@@ -1,0 +1,78 @@
+## A simple Arua script that implements a basic logger.
+##
+## license: CC0
+
+use sys.io
+use sys.io.tty.escape as ansi
+use sys.time.now as current_time
+
+#: The different severities of log messages
+pub enum LogLevel
+	#: Meant for numerous and excruciatingly detailed messages
+	VERBOSE
+	#: Information for developers/engineers
+	DEBUG
+	#: General information
+	INFO
+	#: Warnings and other notable information
+	WARN
+	#: Errors, generally recoverable or, at least, non-fatal
+	ERROR
+	#: Fatal errors. May terminate the program.
+	FATAL
+
+#: Describes something that accepts log messages.
+pub trait Loggable
+	#: Handles a log message
+	#: param level:   The severity of the logging message
+	#: param message: The log message itself
+	pub fn log(level LogLevel, message str)
+
+	pub fn verbose(message str) use log(level=VERBOSE)
+	pub fn debug(message str) use log(level=DEBUG)
+	pub fn info(message str) use log(level=INFO)
+	pub fn warn(message str) use log(level=WARN)
+	pub fn error(message str) use log(level=ERROR)
+	pub fn fatal(message str) use log(level=FATAL)
+
+#: A simple logger implementation that dispatches messages out to
+#: other loggers.
+pub struct LogDispatcher
+	#: A list of other loggers that would like to process these events
+	pub handlers ![&Loggable]
+
+on LogDispatcher be Loggable
+	pub fn log(level LogLevel, message str)
+		handler.log(level, str) for handler in @handlers
+
+#: A logger implementation that prints its messages to a stream as text
+pub struct StreamLogger
+	#: The destination stream
+	pub stream io.Stream
+
+	#: The minimum/maximum log levels
+	pub level (!LogLevel, !LogLevel)
+
+on StreamLogger be Loggable
+	pub fn log(level LogLevel, message str)
+		with (lvl_min, lvl_max) = @level
+			return if level < lvl_min or level > lvl_max
+
+		@stream.write("#{ansi.dim}[#{current_time()}] #{level.name}: #{ansi.reset}#{message}\n")
+
+pub fn main(args [str]) i32
+	out_logger StreamLogger
+		.stream = sys.io.out
+		.level = (nil, INFO)
+	err_logger StreamLogger
+		.stream = sys.io.error
+		.level = (WARN, nil)
+	log LogDispatcher
+		.handlers = [out_logger, err_logger]
+
+	log.info("Hello, world!")
+
+	log.verbose("This should be on standard output.")
+	log.error("This should be on standard error.")
+
+	ret 0
