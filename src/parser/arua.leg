@@ -11,7 +11,7 @@
 	               mit license
 */
 
-#define YY_DEBUG
+// #define YY_DEBUG
 #include <stdio.h>
 #include <string.h>
 

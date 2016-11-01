@@ -60,13 +60,13 @@ static void register_visitor(Ptr<ParserVisitor> visitor) {
 	current_visitor = visitor.operator->();
 }
 
-void ParseAruaStdin(Ptr<ParserVisitor> visitor) {
+void arua::ParseAruaStdin(Ptr<ParserVisitor> visitor) {
 	register_visitor(visitor);
 	AruaParserSetFile(stdin);
 	AruaParse();
 }
 
-void ParseAruaFile(filesystem::path filepath, Ptr<ParserVisitor> visitor) {
+void arua::ParseAruaFile(filesystem::path filepath, Ptr<ParserVisitor> visitor) {
 	register_visitor(visitor);
 	FILE *file = fopen(filepath.str().c_str(), "r");
 	if (file == NULL) {

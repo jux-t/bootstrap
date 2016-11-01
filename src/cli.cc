@@ -11,9 +11,11 @@
 */
 
 #include <iostream>
+#include <vector>
 
+#include "ast/ast-visitor.h"
 #include "cmdline.h"
-#include "parser/parser.h"
+#include "exception.h"
 
 using namespace arua;
 using namespace std;
@@ -26,23 +28,27 @@ int main(int argc, const char **argv) {
 		return 2;
 	}
 
+	int exitCode = 0;
 	for (filesystem::path filename : config->extras) {
-		cout << "arua-bootstrap: " << filename << endl;
-		
-		if (filename == "-") {
-			AruaParserSetFile(stdin);
-			AruaParse();
-		} else {
-			FILE *file = fopen(filename.str().c_str(), "r");
-			if (file == NULL) {
-				cerr << "arua-bootstrap: could not open " << filename << ": " << strerror(errno) << endl;
+		try {
+			cout << "arua-bootstrap: " << filename << endl;
+	
+			// TODO actually do something with the visitors
+			auto visitor = Ptr<AstVisitor>::make();
+			
+			if (filename == "-") {
+				ParseAruaStdin(visitor.as<ParserVisitor>());
+			} else {
+				ParseAruaFile(filename, visitor.as<ParserVisitor>());
 			}
-
-			AruaParserSetFile(file);
-			AruaParse();
-
-			fclose(file);
+		} catch (arua::Exception &e) {
+			cerr << "arua-bootstrap: error: " << e << endl;
+			exitCode = 1;
 		}
+	}
+
+	if (exitCode) {
+		return exitCode;
 	}
 
 	return 0;
