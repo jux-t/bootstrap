@@ -13,6 +13,7 @@
 #include <iostream>
 
 #include "cmdline.h"
+#include "parser/parser.h"
 
 using namespace arua;
 using namespace std;
@@ -27,6 +28,21 @@ int main(int argc, const char **argv) {
 
 	for (filesystem::path filename : config->extras) {
 		cout << "arua-bootstrap: " << filename << endl;
+		
+		if (filename == "-") {
+			AruaParserSetFile(stdin);
+			AruaParse();
+		} else {
+			FILE *file = fopen(filename.str().c_str(), "r");
+			if (file == NULL) {
+				cerr << "arua-bootstrap: could not open " << filename << ": " << strerror(errno) << endl;
+			}
+
+			AruaParserSetFile(file);
+			AruaParse();
+
+			fclose(file);
+		}
 	}
 
 	return 0;

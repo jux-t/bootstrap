@@ -1,39 +1,48 @@
 %{
-// #define YY_DEBUG
+/*
+	      ____    _____   __   _  ____
+	     |    \  |     | |  | | ||    \
+	     |     \ |     \ |  |_| ||     \
+	     |__|\__\|__|\__\|______||__|\__\
+
+	            arua bootstrap ast
+	      copyright (c) 2016, josh junon
+	    github.com/arua-lang/bootstrap-ast
+	               mit license
+*/
+
+#define YY_DEBUG
 #include <stdio.h>
 #include <string.h>
 
 #include "parser/parser.h"
 
-extern arua_bootstrap_parser_visitor arua_bsp_visitor;
-extern const char *arua_bsp_input;
-extern size_t arua_bsp_pos;
-extern size_t arua_bsp_len;
+static arua_bootstrap_parser_visitor *arua_bsp_visitor = 0;
+static FILE *arua_bsp_file = stdin;
 
-#ifdef ARUA_BOOTSTRAP_NOSTDIN
-#define u_min(a, b) \
-	({ __typeof__ (a) _a = (a); \
-	__typeof__ (b) _b = (b); \
-	_a < _b ? _a : _b; })
+int yyparse();
 
-#define YY_INPUT(buf, result, max_size) \
-{ \
-	if (arua_bsp_pos >= arua_bsp_len) { \
-		result = 0; \
-	} else { \
-		result = u_min(arua_bsp_len - arua_bsp_pos, max_size); \
-		memcpy(buf, &arua_bsp_input[arua_bsp_pos], result); \
-		arua_bsp_pos += result; \
-	} \
+void AruaParserSetVisitor(arua_bootstrap_parser_visitor *visitor) {
+	arua_bsp_visitor = visitor;
 }
-#endif
+
+void AruaParserSetFile(FILE *file) {
+	arua_bsp_file = file;
+}
+
+void AruaParse() {
+	while (yyparse());
+}
+
+#undef YY_INPUT
+#define YY_INPUT(buf, result, max_size) { result = fread(buf, 1, max_size, arua_bsp_file); }
 
 static size_t indent = 0;
 %}
 
 arua
 	= (indent? line ([\r\n\f]+ | &EOF))+ EOF indent
-	{ arua_bsp_visitor.eof(); }
+	{ arua_bsp_visitor->eof(); }
 	;
 
 line
@@ -49,12 +58,12 @@ line-comment
 
 comment-header
 	= '##' (' '+ <[^\r\n\f]+>)?
-	{ arua_bsp_visitor.comment_header(yytext); }
+	{ arua_bsp_visitor->comment_header(yytext); }
 	;
 
 comment-doc
 	= '#:' (' '+ <[^\r\n\f]+>)?
-	{ arua_bsp_visitor.comment_doc(yytext); }
+	{ arua_bsp_visitor->comment_doc(yytext); }
 	;
 
 comment-source
@@ -77,32 +86,32 @@ statement
 
 statement-use
 	= public? "use " canonical-path-match alias?
-	{ arua_bsp_visitor.statement_use(); }
+	{ arua_bsp_visitor->statement_use(); }
 	;
 
 statement-type
 	= public? "type " type alias
-	{ arua_bsp_visitor.statement_type(); }
+	{ arua_bsp_visitor->statement_type(); }
 	;
 
 statement-alias
 	= public? "alias " type alias
-	{ arua_bsp_visitor.statement_alias(); }
+	{ arua_bsp_visitor->statement_alias(); }
 	;
 
 statement-fn
 	= public? "fn " identifier '(' decl-var-list? ')' (' ' type)?
-	{ arua_bsp_visitor.statement_fn(); }
+	{ arua_bsp_visitor->statement_fn(); }
 	;
 
 statement-ret
 	= "ret" (' ' expression-r)?
-	{ arua_bsp_visitor.statement_ret(); }
+	{ arua_bsp_visitor->statement_ret(); }
 	;
 
 statement-decl-var
 	= decl-var (' = ' expression-r)?
-	{ arua_bsp_visitor.statement_decl_var(); }
+	{ arua_bsp_visitor->statement_decl_var(); }
 	;
 
 expression-r
@@ -111,7 +120,7 @@ expression-r
 	| expression-r-number
 	| expression-r-invocation
 	)
-	{ arua_bsp_visitor.r_expression(); }
+	{ arua_bsp_visitor->r_expression(); }
 	;
 
 expression-r-number
@@ -121,12 +130,12 @@ expression-r-number
 
 expression-r-invocation
 	= canonical-path '(' invocation-arguments? ')'
-	{ arua_bsp_visitor.r_invocation(); }
+	{ arua_bsp_visitor->r_invocation(); }
 	;
 
 expression-r-string
 	= '"' <string-character*> '"'
-	{ arua_bsp_visitor.r_string(yytext); }
+	{ arua_bsp_visitor->r_string(yytext); }
 	;
 
 string-character
@@ -147,28 +156,28 @@ number
 
 number-simple
 	= <('+'|'-')? &([0-9] | '.' [0-9]) digits? ('.' digits?)?>
-	{ arua_bsp_visitor.r_number(yytext); }
+	{ arua_bsp_visitor->r_number(yytext); }
 	;
 
 number-qualifier
 	= <[fui] digits>
-	{ arua_bsp_visitor.r_number_qualifier(yytext); }
+	{ arua_bsp_visitor->r_number_qualifier(yytext); }
 	;
 
 number-sci
 	= 'e' <('+'|'-')? digits>
-	{ arua_bsp_visitor.r_number_sci(yytext); }
+	{ arua_bsp_visitor->r_number_sci(yytext); }
 	;
 
 number-radix
 	= number-radix-prefix <digits-radix>
-	{ arua_bsp_visitor.r_number_radix(yytext); }
+	{ arua_bsp_visitor->r_number_radix(yytext); }
 	number-qualifier?
 	;
 
 number-radix-prefix
 	= <[0-9][0-9]?> 'x'
-	{ arua_bsp_visitor.r_number_radix_prefix(yytext) }
+	{ arua_bsp_visitor->r_number_radix_prefix(yytext) }
 	;
 
 decl-var-list
@@ -181,12 +190,12 @@ decl-var
 
 public
 	= "pub "
-	{ arua_bsp_visitor.pub(); }
+	{ arua_bsp_visitor->pub(); }
 	;
 
 alias
 	= " as " identifier
-	{ arua_bsp_visitor.alias(); }
+	{ arua_bsp_visitor->alias(); }
 	;
 
 type
@@ -196,38 +205,38 @@ type
 
 type-basic
 	= canonical-path type-basic-template?
-	{ arua_bsp_visitor.type_basic(); }
+	{ arua_bsp_visitor->type_basic(); }
 	;
 
 type-basic-template
 	= '<' type (", " type)* '>'
-	{ arua_bsp_visitor.type_basic_template(); }
+	{ arua_bsp_visitor->type_basic_template(); }
 	;
 
 type-array
 	= '[' type ']'
-	{ arua_bsp_visitor.type_array(); }
+	{ arua_bsp_visitor->type_array(); }
 	;
 
 canonical-path
 	= identifier ('.' identifier)*
-	{ arua_bsp_visitor.canonical_path(); }
+	{ arua_bsp_visitor->canonical_path(); }
 	;
 
 canonical-path-match
 	= identifier-match ('.' identifier-match)*
-	{ arua_bsp_visitor.canonical_path_match(); }
+	{ arua_bsp_visitor->canonical_path_match(); }
 	;
 
 identifier-match
 	= identifier
 	| '*'
-	{ arua_bsp_visitor.identifier_wildcard(); }
+	{ arua_bsp_visitor->identifier_wildcard(); }
 	;
 
 identifier
 	= <[a-zA-Z_] [a-zA-Z0-9_]*>
-	{ arua_bsp_visitor.identifier(yytext); }
+	{ arua_bsp_visitor->identifier(yytext); }
 	;
 
 digits-radix
@@ -244,11 +253,11 @@ indent
 
 		if (new_indent > indent) {
 			for (size_t i = 0; i < (new_indent - indent); i++) {
-				arua_bsp_visitor.indent();
+				arua_bsp_visitor->indent();
 			}
 		} else if (new_indent < indent) {
 			for (size_t i = 0; i < (indent - new_indent); i++) {
-				arua_bsp_visitor.dedent();
+				arua_bsp_visitor->dedent();
 			}
 		}
 

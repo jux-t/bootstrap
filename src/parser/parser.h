@@ -13,6 +13,7 @@
 	               mit license
 */
 
+#include <stdio.h>
 
 #if __cplusplus
 extern "C" {
@@ -51,6 +52,10 @@ typedef struct {
 	void (*r_invocation)(void);
 	void (*r_string)(const char *text);
 } arua_bootstrap_parser_visitor;
+
+void AruaParserSetVisitor(arua_bootstrap_parser_visitor *visitor);
+void AruaParserSetFile(FILE *file);
+void AruaParse();
 
 #if __cplusplus
 }
