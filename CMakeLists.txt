@@ -31,10 +31,10 @@ include_directories ("${CMAKE_CURRENT_SOURCE_DIR}/include")
 include_directories ("${CMAKE_CURRENT_SOURCE_DIR}/src")
 
 add_library (arua-bootstrap-ast ${SRC})
-add_executable (arua-bootstrap-ast-test src/test.cc)
+add_executable (arua-bootstrap-test src/test.cc)
 
-target_link_libraries (arua-bootstrap-ast-test arua-bootstrap-ast)
-target_link_libraries (arua-bootstrap-ast-test arua-bootstrap-grammar)
+target_link_libraries (arua-bootstrap-test arua-bootstrap-ast)
+target_link_libraries (arua-bootstrap-test arua-bootstrap-grammar)
 
-target_compile_options (arua-bootstrap-ast-test PRIVATE ${ARUA_FLAGS})
+target_compile_options (arua-bootstrap-test PRIVATE ${ARUA_FLAGS})
 target_compile_options (arua-bootstrap-ast PRIVATE ${ARUA_FLAGS})
