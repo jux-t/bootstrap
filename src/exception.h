@@ -1,5 +1,5 @@
-#ifndef ARUA_BOOTSTRAP_AST_EXCEPTION_H__
-#define ARUA_BOOTSTRAP_AST_EXCEPTION_H__
+#ifndef ARUA_BOOTSTRAP_EXCEPTION_H__
+#define ARUA_BOOTSTRAP_EXCEPTION_H__
 #pragma once
 /*
 	      ____    _____   __   _  ____
@@ -19,27 +19,26 @@
 #include <string>
 
 namespace arua {
-namespace ast {
 
-class AstException : public virtual std::exception {
-	friend class AstExceptionThrower;
+class Exception : public virtual std::exception {
+	friend class ExceptionThrower;
 public:
-	AstException();
-	AstException(std::string what);
-	AstException(const std::exception &existing);
-	AstException(const AstException &other);
+	Exception();
+	Exception(std::string what);
+	Exception(const std::exception &existing);
+	Exception(const Exception &other);
 
 	virtual const char* what() const throw();
 
 	template <typename T>
-	AstException operator<<(const T& v) {
+	Exception operator<<(const T& v) {
 		std::stringstream ss;
 		ss << this->message << v;
 		this->message = ss.str();
 		return *this;
 	}
 
-	AstException operator<<(std::ostream&(*fp)(std::ostream&)) {
+	Exception operator<<(std::ostream&(*fp)(std::ostream&)) {
 		std::stringstream ss;
 		ss << this->message << fp;
 		this->message = ss.str();
@@ -50,20 +49,19 @@ private:
 	std::string message;
 };
 
-class AstExceptionConstructor {
+class ExceptionConstructor {
 public:
 	template <typename T>
-	AstException operator<<(const T& v) {
-		AstException ex;
+	Exception operator<<(const T& v) {
+		Exception ex;
 		return ex << v;
 	}
 };
 
-std::ostream & operator<<(std::ostream &stream, const AstException &ex);
+std::ostream & operator<<(std::ostream &stream, const Exception &ex);
 
-extern AstExceptionConstructor error;
+extern ExceptionConstructor error;
 
-}
 }
 
 #endif

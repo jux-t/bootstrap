@@ -10,7 +10,7 @@
 	               mit license
 */
 
-#include "ast/exception.h"
+#include "exception.h"
 #include "ast/scope-nested.h"
 #include "ast/type-derived.h"
 
@@ -22,7 +22,7 @@ NestedScope::NestedScope(Ptr<Scope> parent)
 		: parent(parent) {
 	// sanity check
 	if (this == parent.operator->()) {
-		throw ast::error << "refusing to make a nested scope with itself as a parent";
+		throw error << "refusing to make a nested scope with itself as a parent";
 	}
 }
 

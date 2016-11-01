@@ -13,7 +13,8 @@ set (SRC
 	src/ast/type-fn.cc
 	src/ast/scope.cc
 	src/ast/scope-nested.cc
-	src/cmdline.cc)
+	src/cmdline.cc
+	src/parser/visitor.cc)
 
 add_custom_command (OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/arua.leg.cc"
 	COMMAND $<TARGET_FILE:leg> -o "${CMAKE_CURRENT_BINARY_DIR}/arua.leg.cc" -P "${CMAKE_CURRENT_SOURCE_DIR}/src/parser/arua.leg"

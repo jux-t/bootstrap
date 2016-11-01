@@ -10,7 +10,7 @@
 	               mit license
 */
 
-#include "ast/exception.h"
+#include "exception.h"
 #include "ast/scope.h"
 #include "ast/type-array.h"
 #include "ast/type-derived.h"
@@ -32,7 +32,7 @@ string Scope::getValueString() const {
 Ptr<DerivedType> Scope::resolve(string name) const {
 	auto itr = this->types.find(name);
 	if (itr == this->types.end()) {
-		throw ast::error << "could not resolve type in current scope: " << name;
+		throw error << "could not resolve type in current scope: " << name;
 	}
 
 	return itr->second;
@@ -45,7 +45,7 @@ bool Scope::canResolve(string name) const {
 void Scope::addType(Ptr<DerivedType> type) {
 	auto itr = this->types.find(type->getName());
 	if (itr != this->types.end()) {
-		throw ast::error
+		throw error
 			<< "could not add type " << type->getName() << " with base type " << type->toString()
 			<< "; already registered under same name as " << itr->second->toString();
 	}
@@ -57,8 +57,8 @@ void Scope::addType(Ptr<DerivedType> type) {
 		// isn't part of the current scope; we're more interested in the type it's derived
 		// off of.
 		type->getBaseType()->assertValidForScope(*this);
-	} catch (AstException &ex) {
-		throw ast::error << "could not add type " << type << " to scope " << *this << ": " << ex;
+	} catch (Exception &ex) {
+		throw error << "could not add type " << type << " to scope " << *this << ": " << ex;
 	}
 
 	this->types.insert(map<string, Ptr<DerivedType>>::value_type(type->getName(), type));

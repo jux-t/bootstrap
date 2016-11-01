@@ -13,7 +13,7 @@
 #include <sstream>
 #include <string>
 
-#include "ast/exception.h"
+#include "exception.h"
 #include "ast/type-fn.h"
 #include "ast/type-number.h"
 
@@ -73,7 +73,7 @@ void FnType::assertValidForScope(const Scope &scope) const {
 	if (!this->isVoid()) {
 		try {
 			this->returnType->assertValidForScope(scope);
-		} catch (AstException &e) {
+		} catch (Exception &e) {
 			e << " (return type)";
 			throw;
 		}
@@ -95,7 +95,7 @@ Ptr<Type> FnType::getReturnType() const {
 	// it throws if isVoid() is true, like literally on the next line.
 	if (this->isVoid()) {
 		// I warned you!
-		throw ast::error << "cannot retrieve return type of void function: " << *this;
+		throw error << "cannot retrieve return type of void function: " << *this;
 	}
 
 	return this->returnType;

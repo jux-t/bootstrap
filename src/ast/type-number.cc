@@ -10,7 +10,7 @@
 	               mit license
 */
 
-#include "ast/exception.h"
+#include "exception.h"
 #include "ast/type-number.h"
 
 using namespace arua::ast;
@@ -22,11 +22,11 @@ NumberType::NumberType(NumberClassification numberClassification, unsigned int w
 		: numberClassification(numberClassification)
 		, width(width) {
 	if (width == 0) {
-		throw ast::error << "numeric bit-widths must be at least 1";
+		throw error << "numeric bit-widths must be at least 1";
 	}
 
 	if (width > MAX_WIDTH) {
-		throw ast::error << "numeric bit-widths cannot be larger than " << MAX_WIDTH;
+		throw error << "numeric bit-widths cannot be larger than " << MAX_WIDTH;
 	}
 
 	if (numberClassification == NumberClassification::FLOAT) {
@@ -37,7 +37,7 @@ NumberType::NumberType(NumberClassification numberClassification, unsigned int w
 		case 128:
 			break;
 		default:
-			throw ast::error << "floating point widths must be one of: 16, 32, 64, 128";
+			throw error << "floating point widths must be one of: 16, 32, 64, 128";
 		}
 	}
 }
@@ -59,7 +59,7 @@ string NumberType::getValueString() const {
 		type = "f";
 		break;
 	default:
-		throw ast::error << "unknown numeric classification: " << (int) this->numberClassification;
+		throw error << "unknown numeric classification: " << (int) this->numberClassification;
 	}
 
 	return type + to_string(this->width);

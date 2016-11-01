@@ -55,7 +55,7 @@ int safeMain() {
 int main() {
 	try {
 		return safeMain();
-	} catch (const AstException &ex) {
+	} catch (const Exception &ex) {
 		cerr << "arua error: " << ex.what() << endl;
 		return EXIT_FAILURE;
 	}

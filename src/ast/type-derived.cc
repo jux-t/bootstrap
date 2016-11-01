@@ -10,7 +10,7 @@
 	               mit license
 */
 
-#include "ast/exception.h"
+#include "exception.h"
 #include "ast/type-derived.h"
 
 using namespace arua;
@@ -22,12 +22,12 @@ DerivedType::DerivedType(string name, Ptr<Type> base)
 		, baseType(base) {
 	// sanity checks
 	if (name.empty()) {
-		throw ast::error << "derived type names must have at least one character: " << *this;
+		throw error << "derived type names must have at least one character: " << *this;
 	}
 
 	if (this == baseType.operator->()) {
 		// absolutely do not try to toString() *this here. :)
-		throw ast::error << "derived types cannot be derivations of themselves";
+		throw error << "derived types cannot be derivations of themselves";
 	}
 }
 
@@ -45,7 +45,7 @@ TypeClassification DerivedType::getTypeClassification() const {
 
 void DerivedType::assertValidForScope(const Scope &scope) const {
 	if (!scope.canResolve(this->name)) {
-		throw ast::error << "derived type is not resolvable in this scope: " << *this;
+		throw error << "derived type is not resolvable in this scope: " << *this;
 	}
 
 	// we don't need to recurse any further here as the call that added the type that ultimately

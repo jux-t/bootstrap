@@ -10,32 +10,31 @@
 	               mit license
 */
 
-#include "ast/exception.h"
+#include "exception.h"
 
-using namespace arua;
 using namespace std;
 
-ast::AstExceptionConstructor arua::ast::error;
+arua::ExceptionConstructor arua::error;
 
-ast::AstException::AstException() {
+arua::Exception::Exception() {
 }
 
-ast::AstException::AstException(string what)
+arua::Exception::Exception(string what)
 		: message(what) {
 }
 
-ast::AstException::AstException(const exception &existing)
+arua::Exception::Exception(const exception &existing)
 		: message(existing.what()) {
 }
 
-ast::AstException::AstException(const ast::AstException &other)
+arua::Exception::Exception(const arua::Exception &other)
 		: message(other.message) {
 }
 
-const char* ast::AstException::what() const throw() {
+const char* arua::Exception::what() const throw() {
 	return this->message.c_str();
 }
 
-ostream & ast::operator<<(ostream &stream, const ast::AstException &ex) {
+ostream & arua::operator<<(ostream &stream, const arua::Exception &ex) {
 	return stream << ex.what();
 }

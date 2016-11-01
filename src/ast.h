@@ -22,6 +22,6 @@
 #include "ast/type-fn.h"
 #include "ast/scope.h"
 #include "ast/scope-nested.h"
-#include "ast/exception.h"
+#include "exception.h"
 
 #endif
