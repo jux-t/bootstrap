@@ -1,3 +1,15 @@
+/*
+	      ____    _____   __   _  ____
+	     |    \  |     | |  | | ||    \
+	     |     \ |     \ |  |_| ||     \
+	     |__|\__\|__|\__\|______||__|\__\
+
+	            arua bootstrap ast
+	      copyright (c) 2016, josh junon
+	    github.com/arua-lang/bootstrap-ast
+	               mit license
+*/
+
 #include <iostream>
 
 #include "parser.h"
