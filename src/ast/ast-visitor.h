@@ -17,6 +17,7 @@
 #include <stack>
 
 #include "ast/comment-header.h"
+#include "ast/node.h"
 #include "parser/visitor.h"
 #include "ptr.h"
 
@@ -61,13 +62,16 @@ private:
 	virtual void visit_r_invocation();
 	virtual void visit_r_string(std::string text);
 
+	void _burn_all();
 	void _burn_header_comments();
+	void _burn_doc_comments();
 
 	int indent;
 	bool header_finished;
 
 	std::stack<unsigned int> stack;
 	std::stack<std::string> resources;
+	std::stack<Ptr<Node>> nodes;
 };
 
 }

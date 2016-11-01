@@ -21,6 +21,8 @@ namespace ast {
 
 class Node {
 public:
+	virtual ~Node() = default;
+
 	/**
 		Gets the type of this AST node as a string
 	*/

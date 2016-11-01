@@ -18,6 +18,7 @@ set (SRC
 	src/ast/ast-visitor.cc
 	src/ast/comment.cc
 	src/ast/comment-header.cc
+	src/ast/comment-doc.cc
 	src/ast/module.cc)
 
 add_custom_command (OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/arua.leg.cc"

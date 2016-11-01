@@ -20,6 +20,7 @@
 #include <sstream>
 
 #include "ast/ast-visitor.h"
+#include "ast/comment-doc.h"
 #include "exception.h"
 
 using namespace arua;
@@ -28,6 +29,7 @@ using namespace std;
 
 enum AruaParserElement : unsigned int {
 	APE_HEADER_DOC,
+	APE_DOC,
 };
 
 AstVisitor::AstVisitor()
@@ -36,11 +38,11 @@ AstVisitor::AstVisitor()
 }
 
 void AstVisitor::visit_eof() {
-	this->_burn_header_comments();
+	this->_burn_all();
 }
 
 void AstVisitor::visit_indent() {
-	this->_burn_header_comments();
+	this->_burn_all();
 	++indent;
 }
 
@@ -54,111 +56,117 @@ void AstVisitor::visit_comment_header(string text) {
 }
 
 void AstVisitor::visit_comment_doc(string text) {
-#pragma unused(text)
-	this->_burn_header_comments();
+	this->_burn_all();
+	this->stack.push(APE_DOC);
+	this->resources.push(text);
 }
 
 void AstVisitor::visit_statement_use() {
-	this->_burn_header_comments();
+	this->_burn_all();
 }
 
 void AstVisitor::visit_statement_type() {
-	this->_burn_header_comments();
+	this->_burn_all();
 }
 
 void AstVisitor::visit_statement_alias() {
-	this->_burn_header_comments();
+	this->_burn_all();
 }
 
 void AstVisitor::visit_statement_fn() {
-	this->_burn_header_comments();
+	this->_burn_all();
 }
 
 void AstVisitor::visit_statement_ret() {
-	this->_burn_header_comments();
+	this->_burn_all();
 }
 
 void AstVisitor::visit_statement_decl_var() {
-	this->_burn_header_comments();
+	this->_burn_all();
 }
 
 void AstVisitor::visit_pub() {
-	this->_burn_header_comments();
+	this->_burn_all();
 }
 
 void AstVisitor::visit_alias() {
-	this->_burn_header_comments();
+	this->_burn_all();
 }
 
 void AstVisitor::visit_canonical_path() {
-	this->_burn_header_comments();
+	this->_burn_all();
 }
 
 void AstVisitor::visit_canonical_path_match() {
-	this->_burn_header_comments();
+	this->_burn_all();
 }
 
 void AstVisitor::visit_identifier(string id) {
 #pragma unused(id)
-	this->_burn_header_comments();
+	this->_burn_all();
 }
 
 void AstVisitor::visit_identifier_wildcard() {
-	this->_burn_header_comments();
+	this->_burn_all();
 }
 
 void AstVisitor::visit_type_array() {
-	this->_burn_header_comments();
+	this->_burn_all();
 }
 
 void AstVisitor::visit_type_basic() {
-	this->_burn_header_comments();
+	this->_burn_all();
 }
 
 void AstVisitor::visit_type_basic_template() {
-	this->_burn_header_comments();
+	this->_burn_all();
 }
 
 void AstVisitor::visit_decl_var() {
-	this->_burn_header_comments();
+	this->_burn_all();
 }
 
 void AstVisitor::visit_r_expression() {
-	this->_burn_header_comments();
+	this->_burn_all();
 }
 
 void AstVisitor::visit_r_number(string text) {
 #pragma unused(text)
-	this->_burn_header_comments();
+	this->_burn_all();
 }
 
 void AstVisitor::visit_r_number_qualifier(string text) {
 #pragma unused(text)
-	this->_burn_header_comments();
+	this->_burn_all();
 }
 
 void AstVisitor::visit_r_number_sci(string text) {
 #pragma unused(text)
-	this->_burn_header_comments();
+	this->_burn_all();
 }
 
 void AstVisitor::visit_r_number_radix(string text) {
 #pragma unused(text)
-	this->_burn_header_comments();
+	this->_burn_all();
 }
 
 void AstVisitor::visit_r_number_radix_prefix(string text) {
 #pragma unused(text)
-	this->_burn_header_comments();
+	this->_burn_all();
 }
 
 void AstVisitor::visit_r_invocation() {
-	this->_burn_header_comments();
+	this->_burn_all();
 }
 
 void AstVisitor::visit_r_string(string text) {
 #pragma unused(text)
+	this->_burn_all();
+}
+
+void AstVisitor::_burn_all() {
 	this->_burn_header_comments();
+	this->_burn_doc_comments();
 }
 
 void AstVisitor::_burn_header_comments() {
@@ -178,6 +186,7 @@ void AstVisitor::_burn_header_comments() {
 
 	while (this->stack.size()) {
 		if (this->stack.top() != APE_HEADER_DOC) {
+			// TODO throw into an assert() function
 			throw error << "encountered element other than a header doc: " << this->stack.top();
 		}
 
@@ -196,4 +205,28 @@ void AstVisitor::_burn_header_comments() {
 
 	this->header_finished = true;
 	this->visitHeaderComment(Ptr<CommentHeader>::make(ss.str()));
+}
+
+void AstVisitor::_burn_doc_comments() {
+	if (!this->stack.size() || this->stack.top() != APE_DOC) {
+		return;
+	}
+
+	deque<string> elements;
+
+	do {
+		elements.push_front(this->resources.top());
+		this->stack.pop();
+		this->resources.pop();
+	} while (this->stack.size() && this->stack.top() == APE_HEADER_DOC);
+
+	stringstream ss;
+	string delim = "";
+
+	for (string elem : elements) {
+		ss << delim << elem;
+		delim = "\n";
+	}
+
+	this->nodes.push(Ptr<CommentDoc>::make(ss.str()).as<Node>());
 }
