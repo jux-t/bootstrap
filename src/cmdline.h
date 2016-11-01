@@ -1,3 +1,6 @@
+#ifndef ARUA_CMDLINE_H__
+#define ARUA_CMDLINE_H__
+#pragma once
 /*
 	      ____    _____   __   _  ____
 	     |    \  |     | |  | | ||    \
@@ -10,20 +13,21 @@
 	               mit license
 */
 
-#include <iostream>
+#include <string>
+#include <vector>
 
-#include "cmdline.h"
+#include "ptr.h"
 
-using namespace arua;
-using namespace std;
+namespace arua {
 
-int main(int argc, const char **argv) {
-	auto config = AruaCliConfig::parse(argc, argv);
+struct AruaCliConfig {
+	bool help;
 
-	if (config->extras.size() == 0) {
-		cerr << "arua-bootstrap: no inputs specified" << endl;
-		return 2;
-	}
+	std::vector<std::string> extras;
 
-	return 0;
+	static Ptr<AruaCliConfig> parse(int argc, const char **argv);
+};
+
 }
+
+#endif
