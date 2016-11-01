@@ -23,8 +23,8 @@ typedef struct {
 	void (*eof)(void);
 	void (*indent)(void);
 	void (*dedent)(void);
-	void (*comment_header)(const char *);
-	void (*comment_doc)(const char *);
+	void (*comment_header)(const char *text);
+	void (*comment_doc)(const char *text);
 	void (*statement_use)(void);
 	void (*statement_type)(void);
 	void (*statement_alias)(void);
