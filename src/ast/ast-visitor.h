@@ -13,11 +13,17 @@
 	               mit license
 */
 
+#include <string>
+#include <stack>
+
 #include "parser/visitor.h"
 
 namespace arua {
 
 class AstVisitor : private ParserVisitor {
+public:
+	AstVisitor();
+
 private:
 	virtual void visit_eof();
 	virtual void visit_indent();
@@ -49,6 +55,14 @@ private:
 	virtual void visit_r_number_radix_prefix(std::string text);
 	virtual void visit_r_invocation();
 	virtual void visit_r_string(std::string text);
+
+	void _burn_header_comments();
+
+	int indent;
+	bool header_finished;
+
+	std::stack<unsigned int> stack;
+	std::stack<std::string> resources;
 };
 
 }

@@ -1,3 +1,9 @@
+## This is a header comment
+## It is included in the AST so things like copyright checks can be made
+## It will also include tag parsing in the future.
+## It should also support 🦄   strange characters
+## Also, here is an empty header comment
+
 # This is a test Arua file.
 # It checks the basic functionality of individual syntactical components.
 
@@ -10,14 +16,6 @@
 # ##########
 #    comment with strange characters
 # 👽 ₃2 └
-
-# header comments
-## This is a header comment
-## It is included in the AST so things like copyright checks can be made
-## It will also include tag parsing in the future.
-## It should also support 🦄   strange characters
-## Also, here is an empty header comment
-##
 
 # doc comments
 #: A document comment
