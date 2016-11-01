@@ -49,6 +49,11 @@ class Ptr {
 	}
 
 public:
+	Ptr()
+			: count(new unsigned int(1))
+			, ptr(nullptr) {
+	}
+
 	Ptr(const Ptr<T> &other)
 			: count(other.count)
 			, ptr(other.ptr) {
@@ -59,8 +64,14 @@ public:
 		--*this->count;
 		if (this->count == 0) {
 			delete this->count;
-			delete this->ptr;
+			if (this->ptr != nullptr) {
+				delete this->ptr;
+			}
 		}
+	}
+
+	operator bool() const {
+		return this->ptr != nullptr;
 	}
 
 	template <typename... Args>
