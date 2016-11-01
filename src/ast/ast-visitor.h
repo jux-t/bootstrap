@@ -16,13 +16,18 @@
 #include <string>
 #include <stack>
 
+#include "ast/comment-header.h"
 #include "parser/visitor.h"
+#include "ptr.h"
 
 namespace arua {
+namespace ast {
 
 class AstVisitor : private ParserVisitor {
-public:
+protected:
 	AstVisitor();
+
+	virtual void visitHeaderComment(Ptr<CommentHeader> comment) = 0;
 
 private:
 	virtual void visit_eof();
@@ -65,6 +70,7 @@ private:
 	std::stack<std::string> resources;
 };
 
+}
 }
 
 #endif

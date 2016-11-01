@@ -13,11 +13,12 @@
 #include <iostream>
 #include <vector>
 
-#include "ast/ast-visitor.h"
+#include "ast/module.h"
 #include "cmdline.h"
 #include "exception.h"
 
 using namespace arua;
+using namespace arua::ast;
 using namespace std;
 
 int main(int argc, const char **argv) {
@@ -33,13 +34,20 @@ int main(int argc, const char **argv) {
 		try {
 			cout << "arua-bootstrap: " << filename << endl;
 	
-			// TODO actually do something with the visitors
-			auto visitor = Ptr<AstVisitor>::make();
+			auto module = Ptr<Module>::make(filename.str());
 			
 			if (filename == "-") {
-				ParseAruaStdin(visitor.as<ParserVisitor>());
+				ParseAruaStdin(module.as<ParserVisitor>());
 			} else {
-				ParseAruaFile(filename, visitor.as<ParserVisitor>());
+				ParseAruaFile(filename, module.as<ParserVisitor>());
+			}
+
+			if (module->getHeaderComment()) {
+				cout << "MODULE HAS A HEADER COMMENT:" << endl;
+				cout << module->getHeaderComment() << endl;
+				cout << "---------------" << endl;
+			} else {
+				cout << "MODULE DOES NOT HAVE A HEADER COMMENT" << endl;
 			}
 		} catch (arua::Exception &e) {
 			cerr << "arua-bootstrap: error: " << e << endl;

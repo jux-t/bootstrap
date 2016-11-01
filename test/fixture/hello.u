@@ -2,7 +2,8 @@
 ## It is included in the AST so things like copyright checks can be made
 ## It will also include tag parsing in the future.
 ## It should also support 🦄   strange characters
-## Also, here is an empty header comment
+## Also, here is an empty header comment (a blank line):
+##
 
 # This is a test Arua file.
 # It checks the basic functionality of individual syntactical components.

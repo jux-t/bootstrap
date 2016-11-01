@@ -23,6 +23,7 @@
 #include "exception.h"
 
 using namespace arua;
+using namespace arua::ast;
 using namespace std;
 
 enum AruaParserElement : unsigned int {
@@ -194,10 +195,5 @@ void AstVisitor::_burn_header_comments() {
 	}
 
 	this->header_finished = true;
-
-	// TODO visit an AST element
-	cout << "HEADER DOC  ---------------------" << endl;
-	cout << ss.str() << endl;
-	cout << "---------------------------------" << endl;
-	// TODO
+	this->visitHeaderComment(Ptr<CommentHeader>::make(ss.str()));
 }
