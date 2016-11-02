@@ -13,12 +13,11 @@
 #include <iostream>
 #include <vector>
 
-#include "ast/module.h"
 #include "cmdline.h"
 #include "exception.h"
+#include "parser/parser.h"
 
 using namespace arua;
-using namespace arua::ast;
 using namespace std;
 
 int main(int argc, const char **argv) {
@@ -34,21 +33,12 @@ int main(int argc, const char **argv) {
 		try {
 			cout << "arua-bootstrap: " << filename << endl;
 	
-			auto module = Ptr<Module>::make(filename.str());
-			
 			if (filename == "-") {
-				ParseAruaStdin(module.as<ParserVisitor>());
+				ParseStdin();
 			} else {
-				ParseAruaFile(filename, module.as<ParserVisitor>());
+				ParseFile(filename);
 			}
 
-			if (module->getHeaderComment()) {
-				cout << "MODULE HAS A HEADER COMMENT:" << endl;
-				cout << module->getHeaderComment() << endl;
-				cout << "---------------" << endl;
-			} else {
-				cout << "MODULE DOES NOT HAVE A HEADER COMMENT" << endl;
-			}
 		} catch (arua::Exception &e) {
 			cerr << "arua-bootstrap: error: " << e << endl;
 			exitCode = 1;

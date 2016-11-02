@@ -15,23 +15,32 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "exception.h"
 #include "parser/parser.h"
 
-static arua_bootstrap_parser_visitor *arua_bsp_visitor = 0;
+using namespace std;
+
 static FILE *arua_bsp_file = stdin;
 
 int yyparse();
 
-void AruaParserSetVisitor(arua_bootstrap_parser_visitor *visitor) {
-	arua_bsp_visitor = visitor;
-}
-
-void AruaParserSetFile(FILE *file) {
-	arua_bsp_file = file;
-}
-
-void AruaParse() {
+static void AruaParse() {
 	while (yyparse());
+}
+
+void arua::ParseStdin() {
+	arua_bsp_file = stdin;
+	AruaParse();
+}
+
+void arua::ParseFile(filesystem::path filepath) {
+	FILE *file = fopen(filepath.str().c_str(), "r");
+	if (file == NULL) {
+		throw error << "could not open file for reading: " << filepath << " (" << strerror(errno) << ")" << endl;
+	}
+	arua_bsp_file = file;
+	AruaParse();
+	fclose(file);
 }
 
 #undef YY_INPUT
@@ -42,7 +51,7 @@ static size_t indent = 0;
 
 arua
 	= (indent? line ([\r\n\f]+ | &EOF))+ EOF indent
-	{ arua_bsp_visitor->eof(); }
+	{ /* TODO EOF */ }
 	;
 
 line
@@ -58,12 +67,12 @@ line-comment
 
 comment-header
 	= '##' (' '+ <[^\r\n\f]+>)?
-	{ arua_bsp_visitor->comment_header(yytext); }
+	{ /* TODO comment_header(yytext) */ }
 	;
 
 comment-doc
 	= '#:' (' '+ <[^\r\n\f]+>)?
-	{ arua_bsp_visitor->comment_doc(yytext); }
+	{ /* TODO comment_doc(yytext) */ }
 	;
 
 comment-source
@@ -86,32 +95,32 @@ statement
 
 statement-use
 	= public? "use " canonical-path-match alias?
-	{ arua_bsp_visitor->statement_use(); }
+	{ /* TODO statement_use() */ }
 	;
 
 statement-type
 	= public? "type " type alias
-	{ arua_bsp_visitor->statement_type(); }
+	{ /* TODO statement_type() */ }
 	;
 
 statement-alias
 	= public? "alias " type alias
-	{ arua_bsp_visitor->statement_alias(); }
+	{ /* TODO statement_alias() */ }
 	;
 
 statement-fn
 	= public? "fn " identifier '(' decl-var-list? ')' (' ' type)?
-	{ arua_bsp_visitor->statement_fn(); }
+	{ /* TODO statement_fn() */ }
 	;
 
 statement-ret
 	= "ret" (' ' expression-r)?
-	{ arua_bsp_visitor->statement_ret(); }
+	{ /* TODO statement_ret() */ }
 	;
 
 statement-decl-var
 	= decl-var (' = ' expression-r)?
-	{ arua_bsp_visitor->statement_decl_var(); }
+	{ /* TODO statement_decl_var() */ }
 	;
 
 expression-r
@@ -120,7 +129,7 @@ expression-r
 	| expression-r-number
 	| expression-r-invocation
 	)
-	{ arua_bsp_visitor->r_expression(); }
+	{ /* TODO r_expression() */ }
 	;
 
 expression-r-number
@@ -130,12 +139,12 @@ expression-r-number
 
 expression-r-invocation
 	= canonical-path '(' invocation-arguments? ')'
-	{ arua_bsp_visitor->r_invocation(); }
+	{ /* TODO r_invocation() */ }
 	;
 
 expression-r-string
 	= '"' <string-character*> '"'
-	{ arua_bsp_visitor->r_string(yytext); }
+	{ /* TODO r_string(yytext) */ }
 	;
 
 string-character
@@ -156,28 +165,28 @@ number
 
 number-simple
 	= <('+'|'-')? &([0-9] | '.' [0-9]) digits? ('.' digits?)?>
-	{ arua_bsp_visitor->r_number(yytext); }
+	{ /* TODO r_number(yytext) */ }
 	;
 
 number-qualifier
 	= <[fui] digits>
-	{ arua_bsp_visitor->r_number_qualifier(yytext); }
+	{ /* TODO r_number_qualifier(yytext) */ }
 	;
 
 number-sci
 	= 'e' <('+'|'-')? digits>
-	{ arua_bsp_visitor->r_number_sci(yytext); }
+	{ /* TODO r_number_sci(yytext) */ }
 	;
 
 number-radix
 	= number-radix-prefix <digits-radix>
-	{ arua_bsp_visitor->r_number_radix(yytext); }
+	{ /* TODO r_number_radix(yytext) */ }
 	number-qualifier?
 	;
 
 number-radix-prefix
 	= <[0-9][0-9]?> 'x'
-	{ arua_bsp_visitor->r_number_radix_prefix(yytext) }
+	{ /* TODO r_number_radix_prefix(yytext) */ }
 	;
 
 decl-var-list
@@ -190,12 +199,12 @@ decl-var
 
 public
 	= "pub "
-	{ arua_bsp_visitor->pub(); }
+	{ /* TODO pub() */ }
 	;
 
 alias
 	= " as " identifier
-	{ arua_bsp_visitor->alias(); }
+	{ /* TODO alias() */ }
 	;
 
 type
@@ -205,38 +214,38 @@ type
 
 type-basic
 	= canonical-path type-basic-template?
-	{ arua_bsp_visitor->type_basic(); }
+	{ /* TODO type_basic() */ }
 	;
 
 type-basic-template
 	= '<' type (", " type)* '>'
-	{ arua_bsp_visitor->type_basic_template(); }
+	{ /* TODO type_basic_template() */ }
 	;
 
 type-array
 	= '[' type ']'
-	{ arua_bsp_visitor->type_array(); }
+	{ /* TODO type_array() */ }
 	;
 
 canonical-path
 	= identifier ('.' identifier)*
-	{ arua_bsp_visitor->canonical_path(); }
+	{ /* TODO canonical_path() */ }
 	;
 
 canonical-path-match
 	= identifier-match ('.' identifier-match)*
-	{ arua_bsp_visitor->canonical_path_match(); }
+	{ /* TODO canonical_path_match() */ }
 	;
 
 identifier-match
 	= identifier
 	| '*'
-	{ arua_bsp_visitor->identifier_wildcard(); }
+	{ /* TODO identifier_wildcard() */ }
 	;
 
 identifier
 	= <[a-zA-Z_] [a-zA-Z0-9_]*>
-	{ arua_bsp_visitor->identifier(yytext); }
+	{ /* TODO identifier(yytext) */ }
 	;
 
 digits-radix
@@ -253,11 +262,11 @@ indent
 
 		if (new_indent > indent) {
 			for (size_t i = 0; i < (new_indent - indent); i++) {
-				arua_bsp_visitor->indent();
+				/* TODO indent() */
 			}
 		} else if (new_indent < indent) {
 			for (size_t i = 0; i < (indent - new_indent); i++) {
-				arua_bsp_visitor->dedent();
+				/* TODO dedent() */
 			}
 		}
 
