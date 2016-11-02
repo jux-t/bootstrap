@@ -5,21 +5,9 @@ add_subdirectory (ext)
 
 set (SRC
 	src/exception.cc
-	src/ast/node.cc
-	src/ast/type-number.cc
-	src/ast/type-derived.cc
-	src/ast/type-array.cc
-	src/ast/type-tuple.cc
-	src/ast/type-fn.cc
-	src/ast/scope.cc
-	src/ast/scope-nested.cc
 	src/cmdline.cc
 	src/parser/visitor.cc
-	src/ast/ast-visitor.cc
-	src/ast/comment.cc
-	src/ast/comment-header.cc
-	src/ast/comment-doc.cc
-	src/ast/module.cc)
+	src/ast/ast-visitor.cc)
 
 add_custom_command (OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/arua.leg.cc"
 	COMMAND $<TARGET_FILE:leg> -o "${CMAKE_CURRENT_BINARY_DIR}/arua.leg.cc" -P "${CMAKE_CURRENT_SOURCE_DIR}/src/parser/arua.leg"
