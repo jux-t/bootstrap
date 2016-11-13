@@ -11,7 +11,6 @@ set (SRC
 	src/ast/comment-header.cc
 	src/ast/path.cc
 	src/ast/statement-use.cc
-	src/ast/struct-members.cc
 	src/ast/type.cc
 	src/ast/type-array.cc
 	src/ast/type-number.cc

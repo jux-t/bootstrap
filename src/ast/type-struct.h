@@ -15,9 +15,10 @@
 
 #include <ostream>
 #include <string>
+#include <vector>
 
+#include "ast/decl-var.h"
 #include "ast/type.h"
-#include "ast/struct-members.h"
 #include "ptr.h"
 
 namespace arua {
@@ -28,14 +29,13 @@ public:
 	virtual ~TypeStruct() = default;
 
 	virtual bool isStruct() const;
-	virtual Ptr<StructMembers> getStructMembers() const;
+	virtual std::vector<Ptr<DeclVar>> getStructMembers() const;
 	virtual std::string getStructName() const;
 
 private:
 	std::string name;
-	Ptr<StructMembers> members;
+	std::vector<Ptr<DeclVar>> members;
 };
-
 
 }
 }

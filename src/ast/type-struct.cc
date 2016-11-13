@@ -20,7 +20,7 @@ bool TypeStruct::isStruct() const {
 	return true;
 }
 
-Ptr<StructMembers> TypeStruct::getStructMembers() const {
+vector<Ptr<DeclVar>> TypeStruct::getStructMembers() const {
 	return this->members;
 }
 

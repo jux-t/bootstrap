@@ -49,8 +49,8 @@ Ptr<Type> Type::getBase() const {
 	return Ptr<Type>();
 }
 
-Ptr<StructMembers> Type::getStructMembers() const {
-	return Ptr<StructMembers>();
+vector<Ptr<DeclVar>> Type::getStructMembers() const {
+	return vector<Ptr<DeclVar>>();
 }
 
 string Type::getStructName() const {
@@ -75,7 +75,9 @@ ostream & arua::ast::operator <<(ostream &stream, const Type &value) {
 		stream << symbol << value.getWidth();
 	} else if (value.isStruct()) {
 		stream << "struct " << value.getStructName() << endl;
-		stream << value.getStructMembers() << endl; // TODO use a renderer for indentation
+		for (const Ptr<DeclVar> &member : value.getStructMembers()) {
+			stream << "\t" << member << endl;
+		}
 	} else {
 		throw error << "unknown type variant discovered!";
 	}

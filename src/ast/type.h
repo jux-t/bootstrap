@@ -14,8 +14,9 @@
 */
 
 #include <ostream>
+#include <vector>
 
-#include "ast/struct-members.h"
+#include "ast/decl-var.h"
 #include "ptr.h"
 
 namespace arua {
@@ -35,13 +36,12 @@ public:
 	virtual bool isArray() const;
 	virtual unsigned int getWidth() const;
 	virtual Ptr<Type> getBase() const;
-	virtual Ptr<StructMembers> getStructMembers() const;
+	virtual std::vector<Ptr<DeclVar>> getStructMembers() const;
 	virtual std::string getStructName() const;
 
 private:
 	friend std::ostream & operator <<(std::ostream &stream, const Type &value);
 };
-
 
 }
 }
