@@ -88,7 +88,7 @@ comment-header
 	;
 
 comment-doc
-	= '#:' (' '+ <[^\r\n\f]+>)?
+	= <> '#:' (' '+ <[^\r\n\f]+>)?
 	{ /* TODO comment_doc(yytext) */ }
 	;
 
