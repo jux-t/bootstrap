@@ -81,7 +81,7 @@ line-comment
 	;
 
 comment-header
-	= '##' (' '+ <[^\r\n\f]+>)?
+	= <> '##' (' '+ <[^\r\n\f]+>)?
 	{
 		headers.push_back(yytext);
 	}
