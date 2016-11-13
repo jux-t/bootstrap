@@ -10,7 +10,13 @@ set (SRC
 	src/ast/module.cc
 	src/ast/comment-header.cc
 	src/ast/path.cc
-	src/ast/statement-use.cc)
+	src/ast/statement-use.cc
+	src/ast/struct-members.cc
+	src/ast/type.cc
+	src/ast/type-array.cc
+	src/ast/type-number.cc
+	src/ast/type-struct.cc
+	src/ast/decl-var.cc)
 
 add_custom_command (OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/arua.leg.cc"
 	COMMAND $<TARGET_FILE:leg> -o "${CMAKE_CURRENT_BINARY_DIR}/arua.leg.cc" -P "${CMAKE_CURRENT_SOURCE_DIR}/src/parser/arua.leg"
