@@ -33,11 +33,15 @@ int main(int argc, const char **argv) {
 		try {
 			cout << "arua-bootstrap: " << filename << endl;
 	
+			Ptr<ast::Module> module;
 			if (filename == "-") {
-				ParseStdin();
+				module = ParseStdin();
 			} else {
-				ParseFile(filename);
+				module = ParseFile(filename);
 			}
+
+			// XXX DEBUG
+			cout << module << endl;
 
 		} catch (arua::Exception &e) {
 			cerr << "arua-bootstrap: error: " << e << endl;

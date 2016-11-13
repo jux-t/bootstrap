@@ -18,9 +18,12 @@
 #include "exception.h"
 #include "parser/parser.h"
 
+using namespace arua;
 using namespace std;
 
 static FILE *arua_bsp_file = stdin;
+
+static Ptr<ast::Module> module;
 
 int yyparse();
 
@@ -28,12 +31,15 @@ static void AruaParse() {
 	while (yyparse());
 }
 
-void arua::ParseStdin() {
+Ptr<ast::Module> arua::ParseStdin() {
+	module = Ptr<ast::Module>::make();
 	arua_bsp_file = stdin;
 	AruaParse();
+	return module;
 }
 
-void arua::ParseFile(filesystem::path filepath) {
+Ptr<ast::Module> arua::ParseFile(filesystem::path filepath) {
+	module = Ptr<ast::Module>::make();
 	FILE *file = fopen(filepath.str().c_str(), "r");
 	if (file == NULL) {
 		throw error << "could not open file for reading: " << filepath << " (" << strerror(errno) << ")" << endl;
@@ -41,6 +47,7 @@ void arua::ParseFile(filesystem::path filepath) {
 	arua_bsp_file = file;
 	AruaParse();
 	fclose(file);
+	return module;
 }
 
 #undef YY_INPUT

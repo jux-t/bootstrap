@@ -15,10 +15,13 @@
 
 #include "filesystem/path.h"
 
+#include "ast/module.h"
+#include "ptr.h"
+
 namespace arua {
 
-void ParseStdin();
-void ParseFile(filesystem::path filepath);
+Ptr<ast::Module> ParseStdin();
+Ptr<ast::Module> ParseFile(filesystem::path filepath);
 
 }
 
