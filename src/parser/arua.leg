@@ -11,9 +11,10 @@
 	               mit license
 */
 
-#define YY_DEBUG
+#include <iostream>
 #include <stdio.h>
 #include <string.h>
+#include <vector>
 
 #include "exception.h"
 #include "parser/parser.h"
@@ -24,6 +25,7 @@ using namespace std;
 static FILE *arua_bsp_file = stdin;
 
 static Ptr<ast::Module> module;
+static vector<string> headers;
 
 int yyparse();
 
@@ -50,15 +52,22 @@ Ptr<ast::Module> arua::ParseFile(filesystem::path filepath) {
 	return module;
 }
 
+// #define YY_DEBUG
 #undef YY_INPUT
 #define YY_INPUT(buf, result, max_size) { result = fread(buf, 1, max_size, arua_bsp_file); }
 
 static size_t indent = 0;
+
+void flush_header();
 %}
 
 arua
-	= (indent? line ([\r\n\f]+ | &EOF))+ EOF indent
+	= (header { flush_header(); })? (indent? line ([\r\n\f]+ | &EOF))+ EOF indent
 	{ /* TODO EOF */ }
+	;
+
+header
+	= (comment-header [\r\n\f])+
 	;
 
 line
@@ -67,14 +76,15 @@ line
 	;
 
 line-comment
-	= comment-header
-	| comment-doc
+	= comment-doc
 	| comment-source
 	;
 
 comment-header
 	= '##' (' '+ <[^\r\n\f]+>)?
-	{ /* TODO comment_header(yytext) */ }
+	{
+		headers.push_back(yytext);
+	}
 	;
 
 comment-doc
@@ -285,3 +295,11 @@ EOF
 	= !.
 	;
 %%
+
+void flush_header() {
+	if (!headers.empty()) {
+		auto headerComment = Ptr<ast::CommentHeader>::make(headers);
+		module->setHeaderComment(headerComment);
+		headers.clear();
+	}
+}
